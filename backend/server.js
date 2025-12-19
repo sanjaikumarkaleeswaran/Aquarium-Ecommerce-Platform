@@ -81,8 +81,9 @@ app.use(errorHandler);
 // Start server
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
 ║   🐠 AQUARIUM COMMERCE API SERVER                        ║
@@ -104,7 +105,8 @@ app.listen(PORT, () => {
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
   `);
-});
+    });
+}
 
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err) => {
@@ -114,4 +116,4 @@ process.on("unhandledRejection", (err) => {
 });
 
 export default app;
- 
+
