@@ -10,7 +10,7 @@ function InventoryDashboard() {
     lowStockItems: [],
     categoryDistribution: []
   });
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -20,21 +20,21 @@ function InventoryDashboard() {
       try {
         setLoading(true);
         const products = await getProducts();
-        
+
         // Calculate totals
         const totalItems = products.length;
-        
+
         // Calculate low stock and out of stock items
         const lowStockItems = [];
         let outOfStockCount = 0;
         let lowStockCount = 0;
-        
+
         products.forEach(product => {
           // Use actual quantity from product data if available, otherwise simulate
-          const currentStock = product.quantity !== undefined ? product.quantity : 
-                              (parseInt(product._id.slice(-4), 16) % 15);
+          const currentStock = product.quantity !== undefined ? product.quantity :
+            (parseInt(product._id.slice(-4), 16) % 15);
           const reorderLevel = 5;
-          
+
           if (currentStock === 0) {
             outOfStockCount++;
             lowStockItems.push({
@@ -55,17 +55,17 @@ function InventoryDashboard() {
             });
           }
         });
-        
+
         // Take only the first 5 low stock items for display
         const displayLowStockItems = lowStockItems.slice(0, 5);
-        
+
         // Calculate total value using actual product prices
         let totalValue = 0;
         try {
           totalValue = products.reduce((sum, product) => {
             // Try different price fields in order of preference
-            const price = product.priceWholesaler || product.priceRetailer || 
-                         product.priceCustomer || 0;
+            const price = product.priceWholesaler || product.priceRetailer ||
+              product.priceCustomer || 0;
             const quantity = product.quantity !== undefined ? product.quantity : 1;
             return sum + (price * quantity);
           }, 0);
@@ -74,14 +74,14 @@ function InventoryDashboard() {
           // Fallback calculation
           totalValue = totalItems * 1000; // Simple fallback
         }
-        
+
         // Calculate category distribution
         const categoryCounts = {};
         products.forEach(product => {
           const category = product.category || 'Unknown';
           categoryCounts[category] = (categoryCounts[category] || 0) + 1;
         });
-        
+
         const categoryDistribution = Object.entries(categoryCounts).map(([name, count], index) => {
           const percentage = totalItems > 0 ? Math.round((count / totalItems) * 100) : 0;
           // Different colors for different categories
@@ -93,7 +93,7 @@ function InventoryDashboard() {
             color: colors[index % colors.length]
           };
         });
-        
+
         setInventoryData({
           totalItems,
           lowStock: lowStockCount,
@@ -102,13 +102,13 @@ function InventoryDashboard() {
           lowStockItems: displayLowStockItems,
           categoryDistribution
         });
-        
+
         setLoading(false);
       } catch (err) {
         console.error('Failed to fetch inventory data:', err);
         setError('Failed to fetch inventory data: ' + (err.message || 'Unknown error'));
         setLoading(false);
-        
+
         // Fallback to mock data in case of error
         const mockData = {
           totalItems: 12, // More realistic count based on sample data
@@ -132,17 +132,17 @@ function InventoryDashboard() {
             { name: 'Corals', count: 1, percentage: 8, color: '#fd79a8' }
           ]
         };
-        
+
         setInventoryData(mockData);
       }
     };
-    
+
     fetchInventoryData();
   }, []);
 
   if (loading) {
     return (
-      <div style={{ 
+      <div style={{
         padding: '20px',
         background: 'linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%)',
         minHeight: '100vh',
@@ -150,7 +150,7 @@ function InventoryDashboard() {
         justifyContent: 'center',
         alignItems: 'center'
       }}>
-        <div style={{ 
+        <div style={{
           textAlign: 'center',
           backgroundColor: 'white',
           padding: '30px',
@@ -167,7 +167,7 @@ function InventoryDashboard() {
 
   if (error) {
     return (
-      <div style={{ 
+      <div style={{
         padding: '20px',
         background: 'linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%)',
         minHeight: '100vh',
@@ -175,7 +175,7 @@ function InventoryDashboard() {
         justifyContent: 'center',
         alignItems: 'center'
       }}>
-        <div style={{ 
+        <div style={{
           textAlign: 'center',
           backgroundColor: 'white',
           padding: '30px',
@@ -186,25 +186,25 @@ function InventoryDashboard() {
           <div style={{ fontSize: '3rem', marginBottom: '15px' }}>⚠️</div>
           <h2>Unable to Load Inventory Data</h2>
           <p style={{ color: '#ff6b6b', fontWeight: '500' }}>{error}</p>
-          <div style={{ 
-            textAlign: 'left', 
-            backgroundColor: '#fff5f5', 
-            padding: '15px', 
-            borderRadius: '8px', 
+          <div style={{
+            textAlign: 'left',
+            backgroundColor: '#fff5f5',
+            padding: '15px',
+            borderRadius: '8px',
             margin: '20px 0',
             borderLeft: '4px solid #ff6b6b'
           }}>
             <h3 style={{ marginTop: 0, color: '#0a4f70' }}>Troubleshooting Tips:</h3>
             <ul style={{ paddingLeft: '20px' }}>
-              <li>Ensure the backend server is running (should start on port 5000)</li>
+              <li>Ensure the backend server is running</li>
               <li>Verify MongoDB is running and accessible</li>
               <li>Check your network connection</li>
-              <li>Confirm the API endpoint is accessible at http://localhost:5000/api/products</li>
+              <li>Confirm the API endpoint is accessible at /api/products</li>
             </ul>
           </div>
           <p>The inventory dashboard is currently displaying simulated data for demonstration purposes.</p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '15px' }}>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               style={{
                 padding: '10px 20px',
@@ -221,7 +221,7 @@ function InventoryDashboard() {
             >
               Retry Loading Data
             </button>
-            <button 
+            <button
               onClick={() => {
                 // Reset to initial mock data
                 const mockData = {
@@ -271,19 +271,19 @@ function InventoryDashboard() {
   }
 
   return (
-    <div style={{ 
+    <div style={{
       padding: '20px',
       background: 'linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%)',
       minHeight: '100vh'
     }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: '30px'
       }}>
         <div>
-          <h1 style={{ 
+          <h1 style={{
             color: '#0a4f70',
             margin: 0,
             fontSize: '2.5rem',
@@ -316,39 +316,39 @@ function InventoryDashboard() {
           transition: 'transform 0.3s ease, box-shadow 0.3s ease',
           cursor: 'pointer'
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'translateY(-5px)';
-          e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
-        }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
+          }}
         >
-          <h3 style={{ 
-            color: '#0a4f70', 
-            margin: '0 0 15px 0', 
-            fontSize: '1.1rem' 
+          <h3 style={{
+            color: '#0a4f70',
+            margin: '0 0 15px 0',
+            fontSize: '1.1rem'
           }}>
             Total Items
           </h3>
-          <p style={{ 
-            fontSize: '2.5rem', 
-            fontWeight: 'bold', 
-            color: '#00a8cc', 
-            margin: '0 0 5px 0' 
+          <p style={{
+            fontSize: '2.5rem',
+            fontWeight: 'bold',
+            color: '#00a8cc',
+            margin: '0 0 5px 0'
           }}>
             {inventoryData.totalItems.toLocaleString()}
           </p>
-          <p style={{ 
-            color: '#1dd1a1', 
-            margin: 0, 
-            fontSize: '0.9rem' 
+          <p style={{
+            color: '#1dd1a1',
+            margin: 0,
+            fontSize: '0.9rem'
           }}>
             +8% from last month
           </p>
         </div>
-        
+
         <div style={{
           backgroundColor: 'white',
           padding: '25px',
@@ -358,39 +358,39 @@ function InventoryDashboard() {
           transition: 'transform 0.3s ease, box-shadow 0.3s ease',
           cursor: 'pointer'
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'translateY(-5px)';
-          e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
-        }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
+          }}
         >
-          <h3 style={{ 
-            color: '#0a4f70', 
-            margin: '0 0 15px 0', 
-            fontSize: '1.1rem' 
+          <h3 style={{
+            color: '#0a4f70',
+            margin: '0 0 15px 0',
+            fontSize: '1.1rem'
           }}>
             Low Stock
           </h3>
-          <p style={{ 
-            fontSize: '2.5rem', 
-            fontWeight: 'bold', 
-            color: '#ff6b6b', 
-            margin: '0 0 5px 0' 
+          <p style={{
+            fontSize: '2.5rem',
+            fontWeight: 'bold',
+            color: '#ff6b6b',
+            margin: '0 0 5px 0'
           }}>
             {inventoryData.lowStock}
           </p>
-          <p style={{ 
-            color: '#ff6b6b', 
-            margin: 0, 
-            fontSize: '0.9rem' 
+          <p style={{
+            color: '#ff6b6b',
+            margin: 0,
+            fontSize: '0.9rem'
           }}>
             Requires attention
           </p>
         </div>
-        
+
         <div style={{
           backgroundColor: 'white',
           padding: '25px',
@@ -400,39 +400,39 @@ function InventoryDashboard() {
           transition: 'transform 0.3s ease, box-shadow 0.3s ease',
           cursor: 'pointer'
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'translateY(-5px)';
-          e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
-        }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
+          }}
         >
-          <h3 style={{ 
-            color: '#0a4f70', 
-            margin: '0 0 15px 0', 
-            fontSize: '1.1rem' 
+          <h3 style={{
+            color: '#0a4f70',
+            margin: '0 0 15px 0',
+            fontSize: '1.1rem'
           }}>
             Out of Stock
           </h3>
-          <p style={{ 
-            fontSize: '2.5rem', 
-            fontWeight: 'bold', 
-            color: '#ff9ff3', 
-            margin: '0 0 5px 0' 
+          <p style={{
+            fontSize: '2.5rem',
+            fontWeight: 'bold',
+            color: '#ff9ff3',
+            margin: '0 0 5px 0'
           }}>
             {inventoryData.outOfStock}
           </p>
-          <p style={{ 
-            color: '#ff6b6b', 
-            margin: 0, 
-            fontSize: '0.9rem' 
+          <p style={{
+            color: '#ff6b6b',
+            margin: 0,
+            fontSize: '0.9rem'
           }}>
             Immediate restock needed
           </p>
         </div>
-        
+
         <div style={{
           backgroundColor: 'white',
           padding: '25px',
@@ -442,34 +442,34 @@ function InventoryDashboard() {
           transition: 'transform 0.3s ease, box-shadow 0.3s ease',
           cursor: 'pointer'
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'translateY(-5px)';
-          e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
-        }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
+          }}
         >
-          <h3 style={{ 
-            color: '#0a4f70', 
-            margin: '0 0 15px 0', 
-            fontSize: '1.1rem' 
+          <h3 style={{
+            color: '#0a4f70',
+            margin: '0 0 15px 0',
+            fontSize: '1.1rem'
           }}>
             Total Value
           </h3>
-          <p style={{ 
-            fontSize: '2.5rem', 
-            fontWeight: 'bold', 
-            color: '#4ecdc4', 
-            margin: '0 0 5px 0' 
+          <p style={{
+            fontSize: '2.5rem',
+            fontWeight: 'bold',
+            color: '#4ecdc4',
+            margin: '0 0 5px 0'
           }}>
             ${inventoryData.totalValue.toLocaleString()}
           </p>
-          <p style={{ 
-            color: '#1dd1a1', 
-            margin: 0, 
-            fontSize: '0.9rem' 
+          <p style={{
+            color: '#1dd1a1',
+            margin: 0,
+            fontSize: '0.9rem'
           }}>
             Current inventory value
           </p>
@@ -489,13 +489,13 @@ function InventoryDashboard() {
           boxShadow: '0 6px 15px rgba(0, 0, 0, 0.08)',
           border: '1px solid rgba(0, 168, 204, 0.1)'
         }}>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
             alignItems: 'center',
             marginBottom: '20px'
           }}>
-            <h2 style={{ 
+            <h2 style={{
               color: '#0a4f70',
               margin: 0,
               paddingBottom: '15px',
@@ -513,8 +513,8 @@ function InventoryDashboard() {
               fontWeight: 'bold',
               transition: 'background-color 0.3s'
             }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#0a4f70'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#00a8cc'}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#0a4f70'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#00a8cc'}
             >
               Reorder Items
             </button>
@@ -549,8 +549,8 @@ function InventoryDashboard() {
                     </td>
                     <td style={{ padding: '15px' }}>
                       <span style={{
-                        color: item.currentStock === 0 ? '#ff6b6b' : 
-                               item.currentStock <= item.reorderLevel * 0.5 ? '#ff9ff3' : '#feca57',
+                        color: item.currentStock === 0 ? '#ff6b6b' :
+                          item.currentStock <= item.reorderLevel * 0.5 ? '#ff9ff3' : '#feca57',
                         fontWeight: '500'
                       }}>
                         {item.currentStock}
@@ -559,12 +559,12 @@ function InventoryDashboard() {
                     <td style={{ padding: '15px' }}>{item.reorderLevel}</td>
                     <td style={{ padding: '15px' }}>
                       <span style={{
-                        color: item.currentStock === 0 ? '#ff6b6b' : 
-                               item.currentStock <= item.reorderLevel * 0.5 ? '#ff9ff3' : '#feca57',
+                        color: item.currentStock === 0 ? '#ff6b6b' :
+                          item.currentStock <= item.reorderLevel * 0.5 ? '#ff9ff3' : '#feca57',
                         fontWeight: '500'
                       }}>
-                        {item.currentStock === 0 ? 'Out of Stock' : 
-                         item.currentStock <= item.reorderLevel * 0.5 ? 'Critical' : 'Low Stock'}
+                        {item.currentStock === 0 ? 'Out of Stock' :
+                          item.currentStock <= item.reorderLevel * 0.5 ? 'Critical' : 'Low Stock'}
                       </span>
                     </td>
                   </tr>
@@ -582,7 +582,7 @@ function InventoryDashboard() {
           boxShadow: '0 6px 15px rgba(0, 0, 0, 0.08)',
           border: '1px solid rgba(0, 168, 204, 0.1)'
         }}>
-          <h2 style={{ 
+          <h2 style={{
             color: '#0a4f70',
             margin: '0 0 20px 0',
             paddingBottom: '15px',
