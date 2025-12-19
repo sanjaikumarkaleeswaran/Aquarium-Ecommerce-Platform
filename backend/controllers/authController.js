@@ -124,51 +124,60 @@ export const register = asyncHandler(async (req, res) => {
 // @route   POST /api/auth/login
 // @access  Public
 export const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  // Find user by email
-  const user = await User.findOne({ email });
+    // Find user by email
+    const user = await User.findOne({ email });
 
-  if (!user) {
-    return res.status(401).json({
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password"
+      });
+    }
+
+    // Check password
+    const isPasswordValid = await user.comparePassword(password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password"
+      });
+    }
+
+    // Check if account is active
+    if (!user.isActive) {
+      return res.status(403).json({
+        success: false,
+        message: "Your account has been deactivated. Please contact support."
+      });
+    }
+
+    // Check approval status for retailers and wholesalers
+    const requiresApproval = (user.role === "retailer" || user.role === "wholesaler") && !user.isApproved;
+
+    // Generate token
+    const token = generateToken(user);
+
+    res.json({
+      success: true,
+      message: "Login successful",
+      user: user.getPublicProfile(),
+      token,
+      requiresApproval,
+      approvalStatus: user.approvalStatus,
+      rejectionReason: user.rejectionReason
+    });
+  } catch (error) {
+    console.error("Login Error:", error);
+    res.status(500).json({
       success: false,
-      message: "Invalid email or password"
+      message: "Server error during login",
+      error: error.message
     });
   }
-
-  // Check password
-  const isPasswordValid = await user.comparePassword(password);
-
-  if (!isPasswordValid) {
-    return res.status(401).json({
-      success: false,
-      message: "Invalid email or password"
-    });
-  }
-
-  // Check if account is active
-  if (!user.isActive) {
-    return res.status(403).json({
-      success: false,
-      message: "Your account has been deactivated. Please contact support."
-    });
-  }
-
-  // Check approval status for retailers and wholesalers
-  const requiresApproval = (user.role === "retailer" || user.role === "wholesaler") && !user.isApproved;
-
-  // Generate token
-  const token = generateToken(user);
-
-  res.json({
-    success: true,
-    message: "Login successful",
-    user: user.getPublicProfile(),
-    token,
-    requiresApproval,
-    approvalStatus: user.approvalStatus,
-    rejectionReason: user.rejectionReason
-  });
 });
 
 // @desc    Get current user profile
