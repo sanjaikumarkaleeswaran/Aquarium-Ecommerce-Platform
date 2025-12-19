@@ -1,6 +1,9 @@
 {
   "name": "aquarium-commerce-backend",
   "version": "1.0.0",
+  "engines": {
+    "node": "18.x"
+  },
   "description": "Multi-role B2B & B2C E-Commerce Platform for Aquarium Products",
   "main": "server.js",
   "type": "module",

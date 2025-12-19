@@ -1,6 +1,9 @@
 {
   "name": "aquarium-commerce",
   "version": "1.0.0",
+  "engines": {
+    "node": "18.x"
+  },
   "description": "Aquarium Commerce Application",
   "scripts": {
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
