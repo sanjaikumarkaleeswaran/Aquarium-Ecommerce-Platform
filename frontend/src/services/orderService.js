@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = "http://localhost:5000/api/orders";
+const API_URL = "/api/orders";
 
 // Place a new order
 export const placeOrder = async (order) => {

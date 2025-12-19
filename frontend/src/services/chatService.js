@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = "http://localhost:5000/api/ai";
+const API_URL = "/api/ai";
 
 /**
  * Analyze a message using the backend AI service

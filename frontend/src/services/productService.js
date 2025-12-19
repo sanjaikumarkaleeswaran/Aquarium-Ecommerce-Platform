@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "/api/products";
 
 // Add timeout and better error handling
 const apiClient = axios.create({

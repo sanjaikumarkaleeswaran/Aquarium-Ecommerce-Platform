@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = "http://localhost:5000/api/users";
+const API_URL = "/api/users";
 
 // Get current user profile
 export const getCurrentUser = async () => {
@@ -22,7 +22,7 @@ export const updateUserProfile = async (userData) => {
 // Get user's products (for wholesalers and retailers)
 export const getUserProducts = async () => {
     const token = sessionStorage.getItem("token");
-    const res = await axios.get(`http://localhost:5000/api/products/my/products`, {
+    const res = await axios.get(`/api/products/my/products`, {
         headers: { Authorization: `Bearer ${token}` }
     });
     return res.data;

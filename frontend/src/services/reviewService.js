@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/reviews';
+const API_URL = '/api/reviews';
 
 const getAuthHeader = () => {
     const token = sessionStorage.getItem('token');
