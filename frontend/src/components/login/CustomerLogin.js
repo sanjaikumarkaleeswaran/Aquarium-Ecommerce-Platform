@@ -218,7 +218,7 @@ function CustomerLogin({ onNavigate }) {
             e.target.style.boxShadow = '0 4px 15px rgba(0, 168, 204, 0.3)';
           }}
         >
-          Login to Dashboard
+          LOGIN TO DASHBOARD
         </button>
 
         <div className="link" style={{ textAlign: 'center', marginTop: '25px' }}>
