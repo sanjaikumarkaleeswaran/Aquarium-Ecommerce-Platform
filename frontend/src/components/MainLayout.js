@@ -58,14 +58,24 @@ const MainLayout = () => {
       setCurrentModule('login');
     } else if (path.startsWith('/login/')) {
       const role = path.split('/')[2];
+      // Explicitly block 'admin' from being set via /login/admin
+      if (role === 'admin') {
+        navigate('/'); // Redirect to home if they try /login/admin
+        return;
+      }
       setUserRole(role);
       setCurrentModule('login');
     } else if (path.startsWith('/signup/')) {
       const role = path.split('/')[2];
+      // Explicitly block 'admin' from being set via /signup/admin
+      if (role === 'admin') {
+        navigate('/'); // Redirect to home if they try /signup/admin
+        return;
+      }
       setUserRole(role);
       setCurrentModule('signup');
     }
-  }, [location]);
+  }, [location, navigate]);
 
   // Handle logout
   const handleLogout = () => {
