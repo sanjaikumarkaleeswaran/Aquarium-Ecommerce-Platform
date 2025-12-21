@@ -25,7 +25,7 @@ export const authenticate = async (req, res, next) => {
         }
 
         // Verify token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallback_secret_key_12345");
 
         // Get user from database
         const user = await User.findById(decoded.id).select("-password");
@@ -239,7 +239,7 @@ export const generateToken = (user) => {
         approvalStatus: user.approvalStatus
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    const token = jwt.sign(payload, process.env.JWT_SECRET || "fallback_secret_key_12345", {
         expiresIn: process.env.JWT_EXPIRE || "30d"
     });
 
