@@ -17,7 +17,7 @@
     "rewrites": [
         {
             "source": "/api/(.*)",
-            "destination": "/backend/server.js"
+            "destination": "https://aquarium-a2dd.onrender.com/api/$1"
         },
         {
             "source": "/static/(.*)",
