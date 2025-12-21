@@ -20,8 +20,12 @@
             "destination": "/backend/server.js"
         },
         {
+            "source": "/static/(.*)",
+            "destination": "/frontend/static/$1"
+        },
+        {
             "source": "/((?!api|static|favicon.ico|manifest.json|logo).*)",
-            "destination": "/index.html"
+            "destination": "/frontend/index.html"
         }
     ]
 }
