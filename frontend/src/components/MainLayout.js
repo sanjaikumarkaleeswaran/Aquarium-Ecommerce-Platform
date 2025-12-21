@@ -53,6 +53,9 @@ const MainLayout = () => {
 
     if (path === '/') {
       setCurrentModule('home');
+    } else if (path === '/secret-admin-login') {
+      setUserRole('admin');
+      setCurrentModule('login');
     } else if (path.startsWith('/login/')) {
       const role = path.split('/')[2];
       setUserRole(role);

@@ -43,181 +43,167 @@ function App() {
       <AuthProvider>
         <ComparisonProvider>
           <ToastProvider>
-            <FishCursor />
-            <RoleBasedAnimation />
-            <Router>
-              <Routes>
-                {/* Main layout route for home, login, and signup */}
-                <Route path="/" element={<MainLayout />} />
-                <Route path="/login/:role" element={<MainLayout />} />
-                <Route path="/signup/:role" element={<MainLayout />} />
+            <CustomerDashboard />
+          </ProtectedRoute>
+                  }
+                />
+          <Route
+            path="/dashboard/retailer"
+            element={
+              <ProtectedRoute allowedRoles={['retailer']}>
+                <RetailerDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/wholesaler"
+            element={
+              <ProtectedRoute allowedRoles={['wholesaler']}>
+                <WholesalerDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/admin"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
 
-                {/* Dashboard Routes - Protected */}
-                <Route
-                  path="/dashboard/customer"
-                  element={
-                    <ProtectedRoute allowedRoles={['customer']}>
-                      <CustomerDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/dashboard/retailer"
-                  element={
-                    <ProtectedRoute allowedRoles={['retailer']}>
-                      <RetailerDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/dashboard/wholesaler"
-                  element={
-                    <ProtectedRoute allowedRoles={['wholesaler']}>
-                      <WholesalerDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/dashboard/admin"
-                  element={
-                    <ProtectedRoute allowedRoles={['admin']}>
-                      <AdminDashboard />
-                    </ProtectedRoute>
-                  }
-                />
+          {/* Wholesaler specific routes - Protected */}
+          <Route
+            path="/wholesaler/products"
+            element={
+              <ProtectedRoute allowedRoles={['wholesaler']}>
+                <ProductManagement />
+              </ProtectedRoute>
+            }
+          />
 
-                {/* Wholesaler specific routes - Protected */}
-                <Route
-                  path="/wholesaler/products"
-                  element={
-                    <ProtectedRoute allowedRoles={['wholesaler']}>
-                      <ProductManagement />
-                    </ProtectedRoute>
-                  }
-                />
+          {/* Retailer specific routes - Protected */}
+          <Route
+            path="/retailer/products"
+            element={
+              <ProtectedRoute allowedRoles={['retailer']}>
+                <RetailerProductManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/retailer/wholesaler-products"
+            element={
+              <ProtectedRoute allowedRoles={['retailer']}>
+                <WholesalerProducts />
+              </ProtectedRoute>
+            }
+          />
 
-                {/* Retailer specific routes - Protected */}
-                <Route
-                  path="/retailer/products"
-                  element={
-                    <ProtectedRoute allowedRoles={['retailer']}>
-                      <RetailerProductManagement />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/retailer/wholesaler-products"
-                  element={
-                    <ProtectedRoute allowedRoles={['retailer']}>
-                      <WholesalerProducts />
-                    </ProtectedRoute>
-                  }
-                />
+          {/* Customer specific routes - Protected */}
+          <Route
+            path="/customer/products"
+            element={
+              <ProtectedRoute allowedRoles={['customer']}>
+                <ProductCatalog />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/customer/product/:productId"
+            element={
+              <ProtectedRoute allowedRoles={['customer']}>
+                <ProductDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/customer/product/:productId/locations"
+            element={
+              <ProtectedRoute allowedRoles={['customer']}>
+                <LocationsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/customer/cart"
+            element={
+              <ProtectedRoute allowedRoles={['customer']}>
+                <CartPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/customer/profile"
+            element={
+              <ProtectedRoute allowedRoles={['customer']}>
+                <ProfileDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/customer/profile/edit"
+            element={
+              <ProtectedRoute allowedRoles={['customer']}>
+                <EditProfile />
+              </ProtectedRoute>
+            }
+          />
 
-                {/* Customer specific routes - Protected */}
-                <Route
-                  path="/customer/products"
-                  element={
-                    <ProtectedRoute allowedRoles={['customer']}>
-                      <ProductCatalog />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/customer/product/:productId"
-                  element={
-                    <ProtectedRoute allowedRoles={['customer']}>
-                      <ProductDetail />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/customer/product/:productId/locations"
-                  element={
-                    <ProtectedRoute allowedRoles={['customer']}>
-                      <LocationsPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/customer/cart"
-                  element={
-                    <ProtectedRoute allowedRoles={['customer']}>
-                      <CartPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/customer/profile"
-                  element={
-                    <ProtectedRoute allowedRoles={['customer']}>
-                      <ProfileDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/customer/profile/edit"
-                  element={
-                    <ProtectedRoute allowedRoles={['customer']}>
-                      <EditProfile />
-                    </ProtectedRoute>
-                  }
-                />
+          {/* Retailer Profile Routes */}
+          <Route
+            path="/retailer/profile"
+            element={
+              <ProtectedRoute allowedRoles={['retailer']}>
+                <ProfileDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/retailer/profile/edit"
+            element={
+              <ProtectedRoute allowedRoles={['retailer']}>
+                <EditProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/customer/compare"
+            element={
+              <ProtectedRoute allowedRoles={['customer']}>
+                <ComparisonPage />
+              </ProtectedRoute>
+            }
+          />
 
-                {/* Retailer Profile Routes */}
-                <Route
-                  path="/retailer/profile"
-                  element={
-                    <ProtectedRoute allowedRoles={['retailer']}>
-                      <ProfileDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/retailer/profile/edit"
-                  element={
-                    <ProtectedRoute allowedRoles={['retailer']}>
-                      <EditProfile />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/customer/compare"
-                  element={
-                    <ProtectedRoute allowedRoles={['customer']}>
-                      <ComparisonPage />
-                    </ProtectedRoute>
-                  }
-                />
+          {/* Shared routes - May need protection or role check inside */}
+          <Route path="/product/:productId/tracking" element={<ProductTracking />} />
 
-                {/* Shared routes - May need protection or role check inside */}
-                <Route path="/product/:productId/tracking" element={<ProductTracking />} />
-
-                {/* Order History Routes - Protected */}
-                <Route
-                  path="/customer/orders"
-                  element={
-                    <ProtectedRoute allowedRoles={['customer']}>
-                      <OrderHistory role="customer" />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/retailer/orders"
-                  element={
-                    <ProtectedRoute allowedRoles={['retailer']}>
-                      <OrderHistory role="retailer" />
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
-              <ComparisonBar />
-              <DrFishChatbot />
-            </Router>
-          </ToastProvider>
-        </ComparisonProvider>
-      </AuthProvider>
-    </ThemeProvider>
+          {/* Order History Routes - Protected */}
+          <Route
+            path="/customer/orders"
+            element={
+              <ProtectedRoute allowedRoles={['customer']}>
+                <OrderHistory role="customer" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/retailer/orders"
+            element={
+              <ProtectedRoute allowedRoles={['retailer']}>
+                <OrderHistory role="retailer" />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+        <ComparisonBar />
+        <DrFishChatbot />
+      </Router>
+    </ToastProvider>
+        </ComparisonProvider >
+      </AuthProvider >
+    </ThemeProvider >
   );
 }
 
