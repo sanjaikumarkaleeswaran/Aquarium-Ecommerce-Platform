@@ -1,0 +1,128 @@
+/* HomePage.css - Mobile Responsive Styles */
+.homepage-container {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #001f3f 0%, #003d7a 50%, #0074D9 100%);
+    padding: 0;
+    margin: 0;
+    /* Removed negative margin */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.homepage-hero {
+    text-align: center;
+    padding: 80px 20px 40px;
+    position: relative;
+    z-index: 10;
+}
+
+.homepage-logo {
+    font-size: 64px;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+    display: inline-block;
+}
+
+.homepage-title {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 16px;
+    text-shadow: 0 0 20px rgba(0, 200, 255, 0.5), 2px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.homepage-subtitle {
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 40px;
+    font-weight: 300;
+    animation: fadeInUp 1s ease-out;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.homepage-cards-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    position: relative;
+    z-index: 10;
+}
+
+.homepage-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 40px 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: cardSlideIn 0.8s ease-out;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .homepage-hero {
+        padding: 60px 15px 30px;
+    }
+
+    .homepage-logo {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+
+    .homepage-title {
+        font-size: 32px;
+        margin-bottom: 12px;
+    }
+
+    .homepage-subtitle {
+        font-size: 18px;
+        margin-bottom: 30px;
+        padding: 0 15px;
+    }
+
+    .homepage-cards-container {
+        grid-template-columns: 1fr;
+        padding: 15px;
+        gap: 20px;
+        max-width: 450px;
+        /* Center and limit width on mobile */
+    }
+
+    .homepage-card {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .homepage-hero {
+        padding: 40px 10px 20px;
+    }
+
+    .homepage-logo {
+        font-size: 40px;
+    }
+
+    .homepage-title {
+        font-size: 26px;
+    }
+
+    .homepage-subtitle {
+        font-size: 16px;
+    }
+
+    .homepage-cards-container {
+        padding: 10px;
+        gap: 15px;
+    }
+}

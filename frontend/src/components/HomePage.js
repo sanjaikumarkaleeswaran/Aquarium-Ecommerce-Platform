@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './HomePage.css';
 
 function HomePage({ onNavigate }) {
   const navigate = useNavigate();
@@ -22,144 +23,6 @@ function HomePage({ onNavigate }) {
 
   const handleRoleClick = (role) => {
     navigate(`/login/${role}`);
-  };
-
-  const styles = {
-    container: {
-      minHeight: '100vh',
-      background: 'linear-gradient(180deg, #001f3f 0%, #003d7a 50%, #0074D9 100%)',
-      padding: '0',
-      margin: '-20px',
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      position: 'relative',
-      overflow: 'hidden',
-    },
-    hero: {
-      textAlign: 'center',
-      padding: '100px 20px 60px',
-      position: 'relative',
-      zIndex: 10,
-    },
-    logo: {
-      fontSize: '64px',
-      marginBottom: '20px',
-      animation: 'float 3s ease-in-out infinite',
-      display: 'inline-block',
-    },
-    title: {
-      fontSize: '56px',
-      fontWeight: 'bold',
-      color: 'white',
-      marginBottom: '16px',
-      textShadow: '0 0 20px rgba(0,200,255,0.5), 2px 2px 4px rgba(0,0,0,0.3)',
-      animation: 'glow 2s ease-in-out infinite alternate',
-    },
-    subtitle: {
-      fontSize: '26px',
-      color: 'rgba(255,255,255,0.95)',
-      marginBottom: '40px',
-      fontWeight: '300',
-      animation: 'fadeInUp 1s ease-out',
-    },
-    cardsContainer: {
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '40px 20px',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-      gap: '40px',
-      position: 'relative',
-      zIndex: 10,
-    },
-    card: {
-      background: 'rgba(255, 255, 255, 0.95)',
-      borderRadius: '25px',
-      padding: '50px 35px',
-      boxShadow: '0 15px 35px rgba(0,0,0,0.3)',
-      transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-      cursor: 'pointer',
-      textAlign: 'center',
-      position: 'relative',
-      overflow: 'hidden',
-      animation: 'cardSlideIn 0.8s ease-out',
-    },
-    cardIcon: {
-      fontSize: '72px',
-      marginBottom: '25px',
-      display: 'inline-block',
-      animation: 'bounce 2s ease-in-out infinite',
-    },
-    cardTitle: {
-      fontSize: '32px',
-      fontWeight: 'bold',
-      color: '#0a4f70',
-      marginBottom: '20px',
-    },
-    cardDescription: {
-      fontSize: '17px',
-      color: '#555',
-      marginBottom: '30px',
-      lineHeight: '1.7',
-    },
-    loginButton: {
-      backgroundColor: '#2196F3',
-      color: 'white',
-      border: 'none',
-      padding: '16px 40px',
-      borderRadius: '30px',
-      fontSize: '18px',
-      fontWeight: 'bold',
-      cursor: 'pointer',
-      transition: 'all 0.3s ease',
-      boxShadow: '0 5px 20px rgba(33,150,243,0.4)',
-      position: 'relative',
-      overflow: 'hidden',
-    },
-    features: {
-      maxWidth: '1200px',
-      margin: '80px auto 60px',
-      padding: '0 20px',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-      gap: '30px',
-      position: 'relative',
-      zIndex: 10,
-    },
-    featureCard: {
-      background: 'rgba(255,255,255,0.15)',
-      backdropFilter: 'blur(10px)',
-      borderRadius: '20px',
-      padding: '35px 25px',
-      textAlign: 'center',
-      border: '2px solid rgba(255,255,255,0.3)',
-      transition: 'all 0.3s ease',
-      animation: 'fadeIn 1s ease-out',
-    },
-    featureIcon: {
-      fontSize: '48px',
-      marginBottom: '20px',
-      display: 'inline-block',
-      animation: 'iconGlow 3s ease-in-out infinite',
-    },
-    featureTitle: {
-      fontSize: '20px',
-      fontWeight: 'bold',
-      color: 'white',
-      marginBottom: '12px',
-    },
-    featureText: {
-      fontSize: '15px',
-      color: 'rgba(255,255,255,0.95)',
-      lineHeight: '1.6',
-    },
-    footer: {
-      textAlign: 'center',
-      color: 'rgba(255,255,255,0.9)',
-      padding: '50px 20px',
-      fontSize: '15px',
-      position: 'relative',
-      zIndex: 10,
-    },
   };
 
   const roles = [
@@ -197,7 +60,7 @@ function HomePage({ onNavigate }) {
   ];
 
   return (
-    <div style={styles.container}>
+    <div className="homepage-container">
       {/* Animated background fish */}
       {fish.map((f) => (
         <div
@@ -266,21 +129,21 @@ function HomePage({ onNavigate }) {
       </div>
 
       {/* Hero Section */}
-      <div style={styles.hero}>
-        <div style={styles.logo}>🐟 🐠 🐡</div>
-        <h1 style={styles.title}>Aquarium Commerce</h1>
-        <p style={styles.subtitle}>
+      <div className="homepage-hero">
+        <div className="homepage-logo">🐟 🐠 🐡</div>
+        <h1 className="homepage-title">Aquarium Commerce</h1>
+        <p className="homepage-subtitle">
           🌊 India's Premier B2B & B2C Aquatic Marketplace 🌊
         </p>
       </div>
 
       {/* Role Cards */}
-      <div style={styles.cardsContainer}>
+      <div className="homepage-cards-container">
         {roles.map((role, index) => (
           <div
             key={role.type}
+            className="homepage-card"
             style={{
-              ...styles.card,
               animationDelay: role.delay,
             }}
             onMouseEnter={(e) => {
@@ -306,18 +169,29 @@ function HomePage({ onNavigate }) {
               }}
             />
 
-            <div style={styles.cardIcon}>{role.icon}</div>
-            <h2 style={styles.cardTitle}>{role.title}</h2>
-            <p style={styles.cardDescription}>{role.description}</p>
+            <div style={{ fontSize: '64px', marginBottom: '20px', display: 'inline-block', animation: 'bounce 2s ease-in-out infinite' }}>{role.icon}</div>
+            <h2 style={{ fontSize: '28px', fontWeight: 'bold', color: '#0a4f70', marginBottom: '15px' }}>{role.title}</h2>
+            <p style={{ fontSize: '16px', color: '#555', marginBottom: '25px', lineHeight: '1.6' }}>{role.description}</p>
             <button
               style={{
-                ...styles.loginButton,
                 backgroundColor: role.color,
+                color: 'white',
+                border: 'none',
+                padding: '14px 30px',
+                borderRadius: '30px',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
                 boxShadow: `0 5px 20px ${role.color}60`,
+                position: 'relative',
+                overflow: 'hidden',
+                width: '100%',
+                maxWidth: '220px'
               }}
               onClick={() => handleRoleClick(role.type)}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1)';
+                e.currentTarget.style.transform = 'scale(1.05)';
                 e.currentTarget.style.boxShadow = `0 8px 25px ${role.color}80`;
               }}
               onMouseLeave={(e) => {
@@ -334,12 +208,28 @@ function HomePage({ onNavigate }) {
       </div>
 
       {/* Features Section */}
-      <div style={styles.features}>
+      <div style={{
+        maxWidth: '1200px',
+        margin: '60px auto 40px',
+        padding: '0 20px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: '25px',
+        position: 'relative',
+        zIndex: 10,
+      }}>
         {features.map((feature, index) => (
           <div
             key={index}
             style={{
-              ...styles.featureCard,
+              background: 'rgba(255,255,255,0.15)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '20px',
+              padding: '30px 20px',
+              textAlign: 'center',
+              border: '2px solid rgba(255,255,255,0.3)',
+              transition: 'all 0.3s ease',
+              animation: 'fadeIn 1s ease-out',
               animationDelay: `${index * 0.15}s`,
             }}
             onMouseEnter={(e) => {
@@ -351,15 +241,22 @@ function HomePage({ onNavigate }) {
               e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
             }}
           >
-            <div style={{ ...styles.featureIcon, animationDelay: `${index * 0.75}s` }}>{feature.icon}</div>
-            <h3 style={styles.featureTitle}>{feature.title}</h3>
-            <p style={styles.featureText}>{feature.text}</p>
+            <div style={{ fontSize: '40px', marginBottom: '15px', display: 'inline-block', animation: 'iconGlow 3s ease-in-out infinite', animationDelay: `${index * 0.75}s` }}>{feature.icon}</div>
+            <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: 'white', marginBottom: '10px' }}>{feature.title}</h3>
+            <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.95)', lineHeight: '1.5' }}>{feature.text}</p>
           </div>
         ))}
       </div>
 
       {/* Footer */}
-      <div style={styles.footer}>
+      <div style={{
+        textAlign: 'center',
+        color: 'rgba(255,255,255,0.9)',
+        padding: '40px 20px',
+        fontSize: '14px',
+        position: 'relative',
+        zIndex: 10,
+      }}>
         <p style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>
           © 2024 Aquarium Commerce
         </p>
