@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../MainLayout.css'; // Import the CSS
 
-const Sidebar = ({ activeSection, onSectionChange }) => {
+const Sidebar = ({ activeSection, onSectionChange, isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const dashboardItems = [
@@ -15,38 +16,46 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
   ];
 
   return (
-    <div style={{
-      width: '250px',
-      height: '100vh',
-      backgroundColor: 'rgba(10, 79, 112, 0.95)',
-      color: 'white',
-      position: 'fixed',
-      left: 0,
-      top: 0,
-      padding: '20px 0',
-      boxShadow: '3px 0 15px rgba(0, 0, 0, 0.3)',
-      zIndex: 1000,
-      overflowY: 'auto'
-    }}>
+    <div className={`sidebar-container ${isOpen ? 'open' : ''}`}>
       <div style={{
         padding: '0 20px 20px',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
       }}>
-        <h2 style={{
-          color: '#00a8cc',
-          fontSize: '1.5rem',
-          margin: '0 0 10px 0'
-        }}>
-          Aquarium Commerce
-        </h2>
-        <p style={{
-          color: '#aaa',
-          fontSize: '0.9rem',
-          margin: 0
-        }}>
-          Admin Dashboard
-        </p>
+        <div>
+          <h2 style={{
+            color: '#00a8cc',
+            fontSize: '1.5rem',
+            margin: '0 0 10px 0'
+          }}>
+            Aquarium Commerce
+          </h2>
+          <p style={{
+            color: '#aaa',
+            fontSize: '0.9rem',
+            margin: 0
+          }}>
+            Admin Dashboard
+          </p>
+        </div>
+        {/* Close button for mobile */}
+        <button
+          className="mobile-close-btn"
+          onClick={onClose}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'white',
+            fontSize: '1.5rem',
+            cursor: 'pointer',
+            display: window.innerWidth <= 768 ? 'block' : 'none'
+          }}
+        >
+          ×
+        </button>
       </div>
 
       <nav>
@@ -60,6 +69,7 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
               <button
                 onClick={() => {
                   onSectionChange(item.id);
+                  if (window.innerWidth <= 768 && onClose) onClose(); // Close sidebar on selection on mobile
                   // Navigate to appropriate route if needed
                   if (item.id === 'home') {
                     navigate('/');
@@ -68,8 +78,8 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
                 style={{
                   width: '100%',
                   padding: '15px 20px',
-                  backgroundColor: activeSection === item.id 
-                    ? 'rgba(0, 168, 204, 0.3)' 
+                  backgroundColor: activeSection === item.id
+                    ? 'rgba(0, 168, 204, 0.3)'
                     : 'transparent',
                   color: activeSection === item.id ? '#00a8cc' : 'white',
                   border: 'none',
@@ -84,14 +94,14 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
                   e.target.style.backgroundColor = 'rgba(0, 168, 204, 0.2)';
                 }}
                 onMouseOut={(e) => {
-                  e.target.style.backgroundColor = activeSection === item.id 
-                    ? 'rgba(0, 168, 204, 0.3)' 
+                  e.target.style.backgroundColor = activeSection === item.id
+                    ? 'rgba(0, 168, 204, 0.3)'
                     : 'transparent';
                 }}
               >
-                <span style={{ 
-                  fontSize: '1.2rem', 
-                  marginRight: '10px' 
+                <span style={{
+                  fontSize: '1.2rem',
+                  marginRight: '10px'
                 }}>
                   {item.icon}
                 </span>

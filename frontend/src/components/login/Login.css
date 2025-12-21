@@ -175,3 +175,42 @@
   color: white;
   border-color: #00a8cc;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 15px;
+    background-attachment: scroll;
+  }
+
+  .login-form {
+    padding: 1.5rem;
+    max-width: 100%;
+    margin: 0 10px;
+  }
+
+  .login-form h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .login-form input {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+  }
+
+  .login-form button {
+    padding: 0.9rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-form {
+    padding: 1.2rem;
+  }
+
+  .login-form h2 {
+    font-size: 1.4rem;
+  }
+}

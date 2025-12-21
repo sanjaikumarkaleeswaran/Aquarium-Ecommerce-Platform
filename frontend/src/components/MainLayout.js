@@ -12,6 +12,7 @@ import CustomerSignup from './signup/CustomerSignup';
 import RetailerSignup from './signup/RetailerSignup';
 import WholesalerSignup from './signup/WholesalerSignup';
 import AdminSignup from './signup/AdminSignup';
+import './MainLayout.css'; // Import the CSS file
 
 // Dashboard Components
 import HomeDashboard from './dashboard/HomeDashboard';
@@ -31,6 +32,7 @@ const MainLayout = () => {
   const [currentModule, setCurrentModule] = useState('home');
   const [userRole, setUserRole] = useState(null);
   const [activeSection, setActiveSection] = useState('home');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State for mobile sidebar
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
@@ -38,8 +40,6 @@ const MainLayout = () => {
   // Redirect authenticated users away from auth pages
   useEffect(() => {
     if (isAuthenticated && user && (location.pathname.startsWith('/login') || location.pathname.startsWith('/signup'))) {
-      // Don't redirect if user needs approval and isn't approved yet
-      // This allows the login page to show the "Pending Approval" modal/message
       if ((user.role === 'retailer' || user.role === 'wholesaler') && !user.isApproved) {
         return;
       }
@@ -58,18 +58,16 @@ const MainLayout = () => {
       setCurrentModule('login');
     } else if (path.startsWith('/login/')) {
       const role = path.split('/')[2];
-      // Explicitly block 'admin' from being set via /login/admin
       if (role === 'admin') {
-        navigate('/'); // Redirect to home if they try /login/admin
+        navigate('/');
         return;
       }
       setUserRole(role);
       setCurrentModule('login');
     } else if (path.startsWith('/signup/')) {
       const role = path.split('/')[2];
-      // Explicitly block 'admin' from being set via /signup/admin
       if (role === 'admin') {
-        navigate('/'); // Redirect to home if they try /signup/admin
+        navigate('/');
         return;
       }
       setUserRole(role);
@@ -92,7 +90,6 @@ const MainLayout = () => {
       setUserRole(role);
     }
 
-    // Update URL without reloading the page
     switch (module) {
       case 'home':
         navigate('/');
@@ -104,7 +101,6 @@ const MainLayout = () => {
         navigate(`/signup/${role}`);
         break;
       case 'dashboard':
-        // For dashboard, we redirect to the actual dashboard route
         switch (role) {
           case 'customer':
             navigate('/dashboard/customer');
@@ -129,108 +125,77 @@ const MainLayout = () => {
 
   // Render the appropriate module based on currentModule state
   const renderModule = () => {
-    // Check if we're rendering a dashboard
     if (activeSection !== 'home') {
       switch (activeSection) {
-        case 'home':
-          return <HomeDashboard />;
-        case 'about':
-          return <AboutDashboard />;
-        case 'contact':
-          return <ContactDashboard />;
-        case 'products':
-          return <ProductsDashboard />;
-        case 'orders':
-          return <OrdersDashboard />;
-        case 'inventory':
-          return <InventoryDashboard />;
-        case 'customers':
-          return <CustomersDashboard />;
-        case 'suppliers':
-          return <SuppliersDashboard />;
-        case 'analytics':
-          return <AnalyticsDashboard />;
-        case 'settings':
-          return <SettingsDashboard />;
-        case 'profile':
-          return <ProfileDashboard />;
-        case 'support':
-          return <SupportDashboard />;
-        default:
-          return <HomePage onNavigate={handleNavigation} />;
+        case 'home': return <HomeDashboard />;
+        case 'about': return <AboutDashboard />;
+        case 'contact': return <ContactDashboard />;
+        case 'products': return <ProductsDashboard />;
+        case 'orders': return <OrdersDashboard />;
+        case 'inventory': return <InventoryDashboard />;
+        case 'customers': return <CustomersDashboard />;
+        case 'suppliers': return <SuppliersDashboard />;
+        case 'analytics': return <AnalyticsDashboard />;
+        case 'settings': return <SettingsDashboard />;
+        case 'profile': return <ProfileDashboard />;
+        case 'support': return <SupportDashboard />;
+        default: return <HomePage onNavigate={handleNavigation} />;
       }
     }
 
-    // Otherwise render the standard modules
     switch (currentModule) {
-      case 'home':
-        return <HomePage onNavigate={handleNavigation} />;
+      case 'home': return <HomePage onNavigate={handleNavigation} />;
       case 'login':
         switch (userRole) {
-          case 'customer':
-            return <CustomerLogin onNavigate={handleNavigation} />;
-          case 'retailer':
-            return <RetailerLogin onNavigate={handleNavigation} />;
-          case 'wholesaler':
-            return <WholesalerLogin onNavigate={handleNavigation} />;
-          case 'admin':
-            return <AdminLogin onNavigate={handleNavigation} />;
-          default:
-            return <HomePage onNavigate={handleNavigation} />;
+          case 'customer': return <CustomerLogin onNavigate={handleNavigation} />;
+          case 'retailer': return <RetailerLogin onNavigate={handleNavigation} />;
+          case 'wholesaler': return <WholesalerLogin onNavigate={handleNavigation} />;
+          case 'admin': return <AdminLogin onNavigate={handleNavigation} />;
+          default: return <HomePage onNavigate={handleNavigation} />;
         }
       case 'signup':
         switch (userRole) {
-          case 'customer':
-            return <CustomerSignup onNavigate={handleNavigation} />;
-          case 'retailer':
-            return <RetailerSignup onNavigate={handleNavigation} />;
-          case 'wholesaler':
-            return <WholesalerSignup onNavigate={handleNavigation} />;
-          case 'admin':
-            return <AdminSignup onNavigate={handleNavigation} />;
-          default:
-            return <HomePage onNavigate={handleNavigation} />;
+          case 'customer': return <CustomerSignup onNavigate={handleNavigation} />;
+          case 'retailer': return <RetailerSignup onNavigate={handleNavigation} />;
+          case 'wholesaler': return <WholesalerSignup onNavigate={handleNavigation} />;
+          case 'admin': return <AdminSignup onNavigate={handleNavigation} />;
+          default: return <HomePage onNavigate={handleNavigation} />;
         }
-      default:
-        return <HomePage onNavigate={handleNavigation} />;
+      default: return <HomePage onNavigate={handleNavigation} />;
     }
   };
 
-  // Check if we should show sidebar and header (only for dashboards)
   const showLayout = activeSection !== 'home' && currentModule !== 'home' && currentModule !== 'login' && currentModule !== 'signup';
 
   return (
-    <div style={{
-      display: 'flex',
-      minHeight: '100vh',
-      background: showLayout ? 'linear-gradient(135deg, #e0f7fa, #b2ebf2)' : 'transparent'
-    }}>
+    <div className={`main-layout ${showLayout ? 'dashboard-active' : ''}`}>
       {/* Sidebar - Only show for dashboards */}
       {showLayout && (
-        <Sidebar
-          activeSection={activeSection}
-          onSectionChange={setActiveSection}
-        />
+        <>
+          <div
+            className={`sidebar-overlay ${isSidebarOpen ? 'visible' : ''}`}
+            onClick={() => setIsSidebarOpen(false)}
+          />
+          <Sidebar
+            activeSection={activeSection}
+            onSectionChange={setActiveSection}
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+          />
+        </>
       )}
 
       {/* Main Content Area */}
-      <div style={{
-        flex: 1,
-        marginLeft: showLayout ? '250px' : '0',
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
+      <div className={`main-content ${!showLayout ? 'no-sidebar' : ''}`}>
         {/* Fixed Header - Only show for dashboards */}
         {showLayout && (
-          <div style={{
-            position: 'sticky',
-            top: 0,
-            zIndex: 1000,
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            padding: '10px 20px',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-            backdropFilter: 'blur(10px)'
-          }}>
+          <div className="sticky-header">
+            <button
+              className="mobile-toggle"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
+              ☰
+            </button>
             <Header
               title="Aquarium Commerce"
               subtitle="🌊 Your Ultimate B2B & B2C Marketplace for All Things Aquatic! 🐠"
@@ -238,11 +203,7 @@ const MainLayout = () => {
           </div>
         )}
 
-        <main style={{
-          flex: 1,
-          padding: showLayout ? '20px' : '0',
-          marginTop: showLayout ? '20px' : '0'
-        }}>
+        <main className="content-wrapper" style={{ padding: showLayout ? undefined : 0, marginTop: showLayout ? undefined : 0 }}>
           {renderModule()}
         </main>
       </div>
