@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
 import { ToastProvider } from './components/shared/ToastProvider';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { ComparisonProvider } from './context/ComparisonContext';
 import ProtectedRoute from './components/shared/ProtectedRoute';
@@ -36,6 +36,12 @@ import OrderHistory from './components/shared/OrderHistory';
 import FishCursor from './components/shared/FishCursor';
 import RoleBasedAnimation from './components/shared/RoleBasedAnimation';
 import DrFishChatbot from './components/shared/DrFishChatbot';
+
+// Helper component to conditionally render chatbot
+const ChatbotWrapper = () => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <DrFishChatbot /> : null;
+};
 
 function App() {
   return (
@@ -222,7 +228,7 @@ function App() {
                 />
               </Routes>
               <ComparisonBar />
-              <DrFishChatbot />
+              <ChatbotWrapper />
             </Router>
           </ToastProvider>
         </ComparisonProvider>
