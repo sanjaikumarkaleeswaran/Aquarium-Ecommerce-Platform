@@ -179,11 +179,6 @@ npm start
 
 ## User Roles and Functionalities
 
-### Admin
-- Can view all users in the system
-- Can manage all products
-- Can view all orders
-- Access via: `/login/admin`
 
 ### Wholesaler
 - Can add/edit/delete products with dual pricing
