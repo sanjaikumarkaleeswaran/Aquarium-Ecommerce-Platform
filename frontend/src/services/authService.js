@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = "/api/auth";
+const API_URL = "";
 
 // Create a custom axios instance to handle interceptors
 const api = axios.create({
@@ -42,10 +42,7 @@ api.interceptors.response.use(
                     return Promise.reject(error);
                 }
 
-                // Call refresh token endpoint (Note: verify the correct endpoint path)
-                // The backend middleware/auth.js defines 'refreshToken' function, 
-                // but we need to check where it's mounted in routes/auth.js
-                // Assuming it will be mounted at /refresh
+                // Call refresh token endpoint
                 const res = await axios.post(`/api/auth/refresh`, { refreshToken });
 
                 if (res.data.success) {
@@ -77,7 +74,7 @@ api.interceptors.response.use(
 );
 
 export const login = async (email, password) => {
-    const res = await api.post(`/login`, { email, password });
+    const res = await api.post(`/api/auth/login`, { email, password });
 
     // Store tokens
     sessionStorage.setItem("token", res.data.token);
@@ -103,7 +100,7 @@ export const signup = async (name, email, password, role, businessName = null) =
         }
     }
 
-    const res = await api.post(`/signup`, payload);
+    const res = await api.post(`/api/auth/signup`, payload);
 
     // Helper to store session if signup automatically logs in (common pattern)
     if (res.data.token) {
@@ -125,7 +122,7 @@ export const logout = () => {
 
 export const updateProfile = async (userData) => {
     // Uses the intercepted 'api' instance, so headers are auto-injected
-    const res = await api.put(`/me`, userData);
+    const res = await api.put(`/api/auth/me`, userData);
 
     // Update local storage if successful
     if (res.data.success) {
