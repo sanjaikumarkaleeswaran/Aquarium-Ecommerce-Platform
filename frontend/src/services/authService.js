@@ -2,14 +2,89 @@ import axios from 'axios';
 
 const API_URL = "/api/auth";
 
-export const login = async (email, password) => {
-    const res = await axios.post(`${API_URL}/login`, { email, password });
-    // Use sessionStorage instead of localStorage for per-tab sessions
-    sessionStorage.setItem("token", res.data.token);
-    sessionStorage.setItem("user", JSON.stringify(res.data.user));
+// Create a custom axios instance to handle interceptors
+const api = axios.create({
+    baseURL: API_URL
+});
 
-    // Set default header for future requests
-    axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+// Request interceptor to add token to headers
+api.interceptors.request.use(
+    (config) => {
+        const token = sessionStorage.getItem("token");
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+// Response interceptor to handle token refresh
+api.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    async (error) => {
+        const originalRequest = error.config;
+
+        // If error is 401 and we haven't tried to refresh yet
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+
+            try {
+                const refreshToken = sessionStorage.getItem("refreshToken");
+
+                if (!refreshToken) {
+                    logout();
+                    window.location.href = '/login';
+                    return Promise.reject(error);
+                }
+
+                // Call refresh token endpoint (Note: verify the correct endpoint path)
+                // The backend middleware/auth.js defines 'refreshToken' function, 
+                // but we need to check where it's mounted in routes/auth.js
+                // Assuming it will be mounted at /refresh
+                const res = await axios.post(`/api/auth/refresh`, { refreshToken });
+
+                if (res.data.success) {
+                    const { token, refreshToken: newRefreshToken } = res.data;
+
+                    // Update storage
+                    sessionStorage.setItem("token", token);
+                    if (newRefreshToken) {
+                        sessionStorage.setItem("refreshToken", newRefreshToken);
+                    }
+
+                    // Update default headers
+                    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                    originalRequest.headers['Authorization'] = `Bearer ${token}`;
+
+                    // Retry original request
+                    return api(originalRequest);
+                }
+            } catch (refreshError) {
+                console.error("Token refresh failed:", refreshError);
+                logout();
+                window.location.href = '/login';
+                return Promise.reject(refreshError);
+            }
+        }
+
+        return Promise.reject(error);
+    }
+);
+
+export const login = async (email, password) => {
+    const res = await api.post(`/login`, { email, password });
+
+    // Store tokens
+    sessionStorage.setItem("token", res.data.token);
+    if (res.data.refreshToken) {
+        sessionStorage.setItem("refreshToken", res.data.refreshToken);
+    }
+    sessionStorage.setItem("user", JSON.stringify(res.data.user));
 
     return res.data;
 };
@@ -28,24 +103,35 @@ export const signup = async (name, email, password, role, businessName = null) =
         }
     }
 
-    const res = await axios.post(`${API_URL}/signup`, payload);
+    const res = await api.post(`/signup`, payload);
+
+    // Helper to store session if signup automatically logs in (common pattern)
+    if (res.data.token) {
+        sessionStorage.setItem("token", res.data.token);
+        if (res.data.refreshToken) {
+            sessionStorage.setItem("refreshToken", res.data.refreshToken);
+        }
+        sessionStorage.setItem("user", JSON.stringify(res.data.user));
+    }
+
     return res.data;
 };
 
 export const logout = () => {
-    // Clear sessionStorage instead of localStorage
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("refreshToken");
     sessionStorage.removeItem("user");
 };
 
 export const updateProfile = async (userData) => {
-    const token = sessionStorage.getItem("token");
-    const res = await axios.put(`${API_URL}/me`, userData, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+    // Uses the intercepted 'api' instance, so headers are auto-injected
+    const res = await api.put(`/me`, userData);
+
     // Update local storage if successful
     if (res.data.success) {
         sessionStorage.setItem("user", JSON.stringify(res.data.user));
     }
     return res.data;
 };
+
+export default api;

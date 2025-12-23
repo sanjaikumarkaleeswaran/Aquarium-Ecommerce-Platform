@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 import Notification from "../models/Notification.js";
-import { generateToken } from "../middleware/auth.js";
+import { generateAccessToken, generateRefreshToken } from "../middleware/auth.js";
 import { asyncHandler } from "../middleware/errorHandler.js";
 
 // @desc    Register a new user
@@ -70,8 +70,9 @@ export const register = asyncHandler(async (req, res) => {
   // Create user
   const user = await User.create(userData);
 
-  // Generate token
-  const token = generateToken(user);
+  // Generate tokens
+  const token = generateAccessToken(user);
+  const refreshToken = generateRefreshToken(user);
 
   // Determine if approval is required
   const requiresApproval = role === "retailer" || role === "wholesaler";
@@ -116,6 +117,7 @@ export const register = asyncHandler(async (req, res) => {
       : "Registration successful!",
     user: user.getPublicProfile(),
     token,
+    refreshToken,
     requiresApproval
   });
 });
@@ -158,14 +160,16 @@ export const login = asyncHandler(async (req, res) => {
     // Check approval status for retailers and wholesalers
     const requiresApproval = (user.role === "retailer" || user.role === "wholesaler") && !user.isApproved;
 
-    // Generate token
-    const token = generateToken(user);
+    // Generate tokens
+    const token = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
 
     res.json({
       success: true,
       message: "Login successful",
       user: user.getPublicProfile(),
       token,
+      refreshToken,
       requiresApproval,
       approvalStatus: user.approvalStatus,
       rejectionReason: user.rejectionReason

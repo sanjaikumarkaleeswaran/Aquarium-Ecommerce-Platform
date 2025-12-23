@@ -1,37 +1,15 @@
-import axios from 'axios';
+import api from './authService';
 const API_URL = "/api/products";
 
-// Add timeout and better error handling
-const apiClient = axios.create({
-  baseURL: API_URL,
-  timeout: 30000, // 30 second timeout (increased from 10s due to slow DB queries)
-});
-
-// Interceptor to handle errors globally
-apiClient.interceptors.response.use(
-  response => response,
-  error => {
-    console.error('API Error:', error);
-    if (error.response) {
-      // Server responded with error status
-      console.error('Response data:', error.response.data);
-      console.error('Response status:', error.response.status);
-      console.error('Response headers:', error.response.headers);
-    } else if (error.request) {
-      // Request was made but no response received
-      console.error('No response received:', error.request);
-    } else {
-      // Something else happened
-      console.error('Error message:', error.message);
-    }
-    return Promise.reject(error);
-  }
-);
+// Helper for long timeout requests
+const config = {
+  timeout: 30000
+};
 
 // Get all products
 export const getProducts = async () => {
   try {
-    const res = await apiClient.get('/');
+    const res = await api.get(`${API_URL}/`, config);
     return res.data;
   } catch (error) {
     console.error('Error in getProducts:', error);
@@ -42,7 +20,7 @@ export const getProducts = async () => {
 // Get product by ID
 export const getProductById = async (id) => {
   try {
-    const res = await apiClient.get(`/${id}`);
+    const res = await api.get(`${API_URL}/${id}`, config);
     return res.data;
   } catch (error) {
     console.error('Error in getProductById:', error);
@@ -53,10 +31,9 @@ export const getProductById = async (id) => {
 // Add a new product (wholesaler only)
 export const addProduct = async (product) => {
   try {
-    const token = sessionStorage.getItem("token");
-    const res = await apiClient.post('/', product, {
+    const res = await api.post(`${API_URL}/`, product, {
+      ...config,
       headers: {
-        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     });
@@ -70,10 +47,9 @@ export const addProduct = async (product) => {
 // Update a product (wholesaler only)
 export const updateProduct = async (id, product) => {
   try {
-    const token = sessionStorage.getItem("token");
-    const res = await apiClient.put(`/${id}`, product, {
+    const res = await api.put(`${API_URL}/${id}`, product, {
+      ...config,
       headers: {
-        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     });
@@ -87,10 +63,7 @@ export const updateProduct = async (id, product) => {
 // Delete a product (wholesaler only)
 export const deleteProduct = async (id) => {
   try {
-    const token = sessionStorage.getItem("token");
-    const res = await apiClient.delete(`/${id}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    const res = await api.delete(`${API_URL}/${id}`, config);
     return res.data;
   } catch (error) {
     console.error('Error in deleteProduct:', error);
@@ -101,7 +74,8 @@ export const deleteProduct = async (id) => {
 // Search products
 export const searchProducts = async (query, category) => {
   try {
-    const res = await apiClient.get('/search', {
+    const res = await api.get(`${API_URL}/search`, {
+      ...config,
       params: { query, category }
     });
     return res.data;
@@ -114,7 +88,7 @@ export const searchProducts = async (query, category) => {
 // Get products by wholesaler
 export const getProductsByWholesaler = async (wholesalerId) => {
   try {
-    const res = await apiClient.get(`/wholesaler/${wholesalerId}`);
+    const res = await api.get(`${API_URL}/wholesaler/${wholesalerId}`, config);
     return res.data;
   } catch (error) {
     console.error('Error in getProductsByWholesaler:', error);
@@ -125,7 +99,7 @@ export const getProductsByWholesaler = async (wholesalerId) => {
 // Get wholesaler locations for a product
 export const getWholesalerLocations = async (productId) => {
   try {
-    const res = await apiClient.get(`/${productId}/locations`);
+    const res = await api.get(`${API_URL}/${productId}/locations`, config);
     return res.data;
   } catch (error) {
     console.error('Error in getWholesalerLocations:', error);
@@ -136,10 +110,7 @@ export const getWholesalerLocations = async (productId) => {
 // Get current user's products (for wholesalers and retailers)
 export const getUserProducts = async () => {
   try {
-    const token = sessionStorage.getItem("token");
-    const res = await apiClient.get('/my/products', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    const res = await api.get(`${API_URL}/my/products`, config);
     return res.data;
   } catch (error) {
     console.error('Error in getUserProducts:', error);

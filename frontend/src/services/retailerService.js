@@ -1,19 +1,11 @@
-import axios from 'axios';
+import api from './authService';
 
 const API_URL = "/api/retailer-products";
-
-// Helper to get auth header
-const getAuthHeader = () => {
-    const token = sessionStorage.getItem("token");
-    return { Authorization: `Bearer ${token}` };
-};
 
 // Purchase products from a delivered order (Add to Inventory)
 export const purchaseFromWholesaler = async (orderId) => {
     try {
-        const res = await axios.post(`${API_URL}/purchase`, { orderId }, {
-            headers: getAuthHeader()
-        });
+        const res = await api.post(`${API_URL}/purchase`, { orderId });
         return res.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -23,9 +15,7 @@ export const purchaseFromWholesaler = async (orderId) => {
 // Add product to catalog from wholesaler (without purchase)
 export const addCatalogItem = async (productId) => {
     try {
-        const res = await axios.post(`${API_URL}/add-catalog-item`, { productId }, {
-            headers: getAuthHeader()
-        });
+        const res = await api.post(`${API_URL}/add-catalog-item`, { productId });
         return res.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -39,9 +29,7 @@ export const getMyInventory = async (params = {}) => {
         const query = new URLSearchParams(params).toString();
         const url = query ? `${API_URL}/my-inventory/list?${query}` : `${API_URL}/my-inventory/list`;
 
-        const res = await axios.get(url, {
-            headers: getAuthHeader()
-        });
+        const res = await api.get(url);
         return res.data;
     } catch (error) {
         console.error('Get inventory error:', error);
@@ -52,9 +40,7 @@ export const getMyInventory = async (params = {}) => {
 // Update Retailer Product (Price, Stock, Active status)
 export const updateRetailerProduct = async (id, data) => {
     try {
-        const res = await axios.put(`${API_URL}/${id}`, data, {
-            headers: getAuthHeader()
-        });
+        const res = await api.put(`${API_URL}/${id}`, data);
         return res.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -64,9 +50,7 @@ export const updateRetailerProduct = async (id, data) => {
 // Delete Retailer Product (Soft delete)
 export const deleteRetailerProduct = async (id) => {
     try {
-        const res = await axios.delete(`${API_URL}/${id}`, {
-            headers: getAuthHeader()
-        });
+        const res = await api.delete(`${API_URL}/${id}`);
         return res.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -76,9 +60,7 @@ export const deleteRetailerProduct = async (id) => {
 // Get Retailer Analytics
 export const getRetailerAnalytics = async (period = 'all') => {
     try {
-        const res = await axios.get(`${API_URL}/analytics?period=${period}`, {
-            headers: getAuthHeader()
-        });
+        const res = await api.get(`${API_URL}/analytics?period=${period}`);
         return res.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -88,7 +70,7 @@ export const getRetailerAnalytics = async (period = 'all') => {
 // Get ALL Retailer Products (for customers to browse)
 export const getAllRetailerProducts = async () => {
     try {
-        const res = await axios.get(`${API_URL}/browse`);
+        const res = await api.get(`${API_URL}/browse`);
         return res.data;
     } catch (error) {
         console.error('Get all retailer products error:', error);
@@ -99,7 +81,7 @@ export const getAllRetailerProducts = async () => {
 // Get Single Retailer Product by ID (for customer details page)
 export const getRetailerProductById = async (id) => {
     try {
-        const res = await axios.get(`${API_URL}/${id}`);
+        const res = await api.get(`${API_URL}/${id}`);
         return res.data;
     } catch (error) {
         console.error('Get retailer product by ID error:', error);

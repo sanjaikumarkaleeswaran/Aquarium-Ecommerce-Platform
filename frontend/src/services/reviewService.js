@@ -1,15 +1,10 @@
-import axios from 'axios';
+import api from './authService';
 
 const API_URL = '/api/reviews';
 
-const getAuthHeader = () => {
-    const token = sessionStorage.getItem('token');
-    return token ? { Authorization: `Bearer ${token}` } : {};
-};
-
 export const getProductReviews = async (productId) => {
     try {
-        const response = await axios.get(`${API_URL}/product/${productId}`);
+        const response = await api.get(`${API_URL}/product/${productId}`);
         return response.data;
     } catch (error) {
         throw error.response?.data || error.message;
@@ -18,10 +13,9 @@ export const getProductReviews = async (productId) => {
 
 export const createReview = async (productId, rating, comment) => {
     try {
-        const response = await axios.post(
+        const response = await api.post(
             API_URL,
-            { productId, rating, comment },
-            { headers: getAuthHeader() }
+            { productId, rating, comment }
         );
         return response.data;
     } catch (error) {
@@ -31,9 +25,8 @@ export const createReview = async (productId, rating, comment) => {
 
 export const deleteReview = async (reviewId) => {
     try {
-        const response = await axios.delete(
-            `${API_URL}/${reviewId}`,
-            { headers: getAuthHeader() }
+        const response = await api.delete(
+            `${API_URL}/${reviewId}`
         );
         return response.data;
     } catch (error) {

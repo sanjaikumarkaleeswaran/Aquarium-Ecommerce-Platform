@@ -1,13 +1,10 @@
-import axios from 'axios';
+import api from './authService';
 
 const API_URL = '/api/notifications';
 
 export const getNotifications = async () => {
     try {
-        const token = sessionStorage.getItem('token');
-        const response = await axios.get(API_URL, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await api.get(API_URL);
         return response.data;
     } catch (error) {
         console.error('Error fetching notifications:', error);
@@ -17,10 +14,7 @@ export const getNotifications = async () => {
 
 export const getUnreadCount = async () => {
     try {
-        const token = sessionStorage.getItem('token');
-        const response = await axios.get(`${API_URL}/unread-count`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await api.get(`${API_URL}/unread-count`);
         return response.data;
     } catch (error) {
         console.error('Error fetching unread count:', error);
@@ -30,10 +24,7 @@ export const getUnreadCount = async () => {
 
 export const markAsRead = async (notificationId) => {
     try {
-        const token = sessionStorage.getItem('token');
-        const response = await axios.put(`${API_URL}/${notificationId}/read`, {}, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await api.put(`${API_URL}/${notificationId}/read`, {});
         return response.data;
     } catch (error) {
         console.error('Error marking notification as read:', error);
@@ -43,10 +34,7 @@ export const markAsRead = async (notificationId) => {
 
 export const markAllAsRead = async () => {
     try {
-        const token = sessionStorage.getItem('token');
-        const response = await axios.put(`${API_URL}/mark-all-read`, {}, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await api.put(`${API_URL}/mark-all-read`, {});
         return response.data;
     } catch (error) {
         console.error('Error marking all as read:', error);
@@ -56,10 +44,7 @@ export const markAllAsRead = async () => {
 
 export const deleteNotification = async (notificationId) => {
     try {
-        const token = sessionStorage.getItem('token');
-        const response = await axios.delete(`${API_URL}/${notificationId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await api.delete(`${API_URL}/${notificationId}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting notification:', error);
@@ -69,10 +54,7 @@ export const deleteNotification = async (notificationId) => {
 
 export const clearReadNotifications = async () => {
     try {
-        const token = sessionStorage.getItem('token');
-        const response = await axios.delete(`${API_URL}/clear-read`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await api.delete(`${API_URL}/clear-read`);
         return response.data;
     } catch (error) {
         console.error('Error clearing read notifications:', error);

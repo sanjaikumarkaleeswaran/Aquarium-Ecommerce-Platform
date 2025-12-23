@@ -229,8 +229,8 @@ export const checkOwnership = (resourceField = "user") => {
     };
 };
 
-// Middleware to generate and attach JWT token
-export const generateToken = (user) => {
+// Generate Access Token (Short-lived: 15 minutes)
+export const generateAccessToken = (user) => {
     const payload = {
         id: user._id,
         email: user.email,
@@ -239,11 +239,20 @@ export const generateToken = (user) => {
         approvalStatus: user.approvalStatus
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET || "fallback_secret_key_12345", {
-        expiresIn: process.env.JWT_EXPIRE || "30d"
+    return jwt.sign(payload, process.env.JWT_SECRET || "fallback_secret_key_12345", {
+        expiresIn: "15m"
     });
+};
 
-    return token;
+// Generate Refresh Token (Long-lived: 7 days)
+export const generateRefreshToken = (user) => {
+    const payload = {
+        id: user._id
+    };
+
+    return jwt.sign(payload, process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET, {
+        expiresIn: "7d"
+    });
 };
 
 // Middleware to refresh token
@@ -271,12 +280,14 @@ export const refreshToken = async (req, res) => {
             });
         }
 
-        // Generate new access token
-        const newToken = generateToken(user);
+        // Generate new tokens
+        const accessToken = generateAccessToken(user);
+        const newRefreshToken = generateRefreshToken(user);
 
         res.json({
             success: true,
-            token: newToken,
+            token: accessToken,
+            refreshToken: newRefreshToken,
             user: user.getPublicProfile()
         });
     } catch (error) {
@@ -297,6 +308,7 @@ export default {
     retailerOnly,
     customerOnly,
     checkOwnership,
-    generateToken,
+    generateAccessToken,
+    generateRefreshToken,
     refreshToken
 };

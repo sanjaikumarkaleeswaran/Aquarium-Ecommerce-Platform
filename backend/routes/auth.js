@@ -7,7 +7,7 @@ import {
     changePassword,
     logout
 } from "../controllers/authController.js";
-import { authenticate } from "../middleware/auth.js";
+import { authenticate, refreshToken } from "../middleware/auth.js";
 import { userValidation, validate } from "../middleware/validation.js";
 
 const router = express.Router();
@@ -16,6 +16,7 @@ const router = express.Router();
 router.post("/register", userValidation.register, validate, register);
 router.post("/signup", userValidation.register, validate, register); // Alias for register
 router.post("/login", userValidation.login, validate, login);
+router.post("/refresh", refreshToken);
 
 // Private routes
 router.get("/me", authenticate, getMe);

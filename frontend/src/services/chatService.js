@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from './authService';
 
 const API_URL = "/api/ai";
 
@@ -10,20 +10,13 @@ const API_URL = "/api/ai";
  */
 export const analyzeMessage = async (message, history = []) => {
     try {
-        // Get token from sessionStorage if user is logged in
-        const token = sessionStorage.getItem("token");
-
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
 
-        if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
-        }
-
-        const res = await axios.post(`${API_URL}/chat`, { message, history }, config);
+        const res = await api.post(`${API_URL}/chat`, { message, history }, config);
 
         if (res.data.success) {
             return res.data.data;
