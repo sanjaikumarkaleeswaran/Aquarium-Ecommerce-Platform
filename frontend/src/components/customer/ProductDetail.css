@@ -1,0 +1,250 @@
+/* ProductDetail.css */
+.product-detail-container {
+    padding: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.product-not-found {
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.back-btn-container {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.back-btn {
+    padding: 10px 20px;
+    background-color: var(--ocean-blue);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #0a4f70;
+}
+
+.product-detail-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 30px;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.gallery-section {
+    flex: 1 1 500px;
+    min-width: 300px;
+}
+
+.main-image-container {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    z-index: 10;
+    position: relative;
+    background-color: #ffff;
+}
+
+.no-image-placeholder {
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    color: #888;
+}
+
+.thumbnail-strip {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.thumbnail-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.2s;
+}
+
+.thumbnail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info-section {
+    flex: 1 1 400px;
+}
+
+.product-title {
+    color: var(--ocean-blue);
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.product-meta {
+    margin-bottom: 20px;
+}
+
+.meta-row {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--text-main);
+}
+
+.product-price {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: var(--coral);
+    font-weight: bold;
+}
+
+.stock-status {
+    font-weight: bold;
+}
+
+.comparison-tags {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.tag-badge {
+    padding: 5px 12px;
+    background: var(--light-aqua);
+    border-radius: 15px;
+    font-size: 0.9rem;
+    color: var(--ocean-blue);
+    font-weight: 500;
+}
+
+.description-section {
+    margin-bottom: 30px;
+}
+
+.description-title {
+    color: var(--ocean-blue);
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.description-text {
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.actions-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-add-cart {
+    padding: 15px 40px;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    flex: 1;
+    min-width: 200px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-add-cart:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-compare {
+    padding: 15px 30px;
+    background-color: transparent;
+    color: var(--ocean-blue);
+    border: 2px solid var(--ocean-blue);
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    min-width: 150px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-compare:hover {
+    background-color: var(--ocean-blue);
+    color: white;
+}
+
+/* Skeleton Loading */
+.skeleton-container {
+    padding: 20px;
+}
+
+.skeleton-card {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.skeleton-left,
+.skeleton-right {
+    flex: 1;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .product-detail-container {
+        padding: 15px;
+    }
+
+    .product-detail-card {
+        padding: 20px;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .gallery-section {
+        flex: 1 1 100%;
+    }
+
+    .main-image-container {
+        min-height: 300px;
+    }
+
+    .actions-row {
+        flex-direction: column;
+    }
+
+    .btn-add-cart,
+    .btn-compare {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .product-title {
+        font-size: 1.6rem;
+    }
+}

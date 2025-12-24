@@ -45,14 +45,6 @@ const Sidebar = ({ activeSection, onSectionChange, isOpen, onClose }) => {
         <button
           className="mobile-close-btn"
           onClick={onClose}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'white',
-            fontSize: '1.5rem',
-            cursor: 'pointer',
-            display: window.innerWidth <= 768 ? 'block' : 'none'
-          }}
         >
           ×
         </button>

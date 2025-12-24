@@ -10,6 +10,7 @@ import UnifiedCart from '../shared/UnifiedCart';
 import { getDisplayPrice } from '../../utils/userUtils';
 import { useToast } from '../shared/ToastProvider';
 import PaymentGateway from '../shared/PaymentGateway';
+import './ProductCatalog.css';
 
 function ProductCatalog() {
   const [products, setProducts] = useState([]);
@@ -263,80 +264,26 @@ function ProductCatalog() {
 
   if (loading) {
     return (
-      <div style={{
-        padding: '20px',
-        background: 'var(--background-gradient)',
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontFamily: 'Arial, sans-serif'
-      }}>
+      <div className="catalog-loading">
         <h2>Loading products...</h2>
       </div>
     );
   }
 
   return (
-    <div style={{
-      padding: '20px',
-      background: 'var(--background-gradient)', // Use gradient variable
-      minHeight: '100vh',
-      fontFamily: 'Arial, sans-serif',
-      overflowY: 'auto',
-      color: 'var(--text-main)' // Set default text color
-    }}>
+    <div className="product-catalog-container">
       <Header
         title="Product Catalog"
         subtitle="Browse our extensive collection of aquarium products"
       />
-      <div style={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        marginBottom: '20px'
-      }}>
+      <div className="cart-button-container">
         <button
           onClick={() => setShowCart(!showCart)}
-          style={{
-            padding: '12px 25px',
-            backgroundColor: cart.length > 0 ? 'var(--aqua-blue)' : '#95a5a6',
-            color: 'white',
-            border: 'none',
-            borderRadius: '30px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            boxShadow: cart.length > 0 ? '0 4px 10px rgba(0, 168, 204, 0.3)' : '0 4px 10px rgba(149, 165, 166, 0.3)',
-            transition: 'all 0.3s ease',
-            fontSize: '1rem',
-            position: 'relative'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.transform = 'translateY(-3px)';
-            e.target.style.boxShadow = cart.length > 0 ? '0 6px 15px rgba(0, 168, 204, 0.4)' : '0 6px 15px rgba(149, 165, 166, 0.4)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = cart.length > 0 ? '0 4px 10px rgba(0, 168, 204, 0.3)' : '0 4px 10px rgba(149, 165, 166, 0.3)';
-          }}
+          className={`catalog-cart-btn ${cart.length > 0 ? 'has-items' : ''}`}
         >
           🛒 Cart {cart.length > 0 && `(${cart.length})`}
           {cart.length > 0 && (
-            <span style={{
-              position: 'absolute',
-              top: '-8px',
-              right: '-8px',
-              backgroundColor: '#e74c3c',
-              color: 'white',
-              borderRadius: '50%',
-              width: '24px',
-              height: '24px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '0.75rem',
-              fontWeight: 'bold',
-              border: '2px solid white'
-            }}>
+            <span className="cart-badge">
               {cart.length}
             </span>
           )}
@@ -344,53 +291,23 @@ function ProductCatalog() {
       </div>
 
       {/* Tab Navigation */}
-      <div style={{
-        backgroundColor: 'var(--card-bg)', // Use card background variable
-        padding: '0 20px',
-        borderRadius: '10px',
-        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-        marginBottom: '20px'
-      }}>
-        <div style={{ display: 'flex', gap: '5px' }}>
+      <div className="tabs-container">
+        <div className="tabs-wrapper">
           <button
             onClick={() => setActiveTab('all')}
-            style={{
-              padding: '12px 20px',
-              backgroundColor: activeTab === 'all' ? 'var(--ocean-blue)' : 'var(--light-bg)',
-              color: activeTab === 'all' ? 'white' : 'var(--ocean-blue)',
-              border: 'none',
-              borderRadius: '5px 5px 0 0',
-              cursor: 'pointer',
-              fontWeight: activeTab === 'all' ? 'bold' : 'normal'
-            }}
+            className={`tab-btn ${activeTab === 'all' ? 'active-all' : ''}`}
           >
             All Products
           </button>
           <button
             onClick={() => setActiveTab('recommended')}
-            style={{
-              padding: '12px 20px',
-              backgroundColor: activeTab === 'recommended' ? 'var(--aqua-blue)' : 'var(--light-bg)',
-              color: activeTab === 'recommended' ? 'white' : 'var(--aqua-blue)',
-              border: 'none',
-              borderRadius: '5px 5px 0 0',
-              cursor: 'pointer',
-              fontWeight: activeTab === 'recommended' ? 'bold' : 'normal'
-            }}
+            className={`tab-btn ${activeTab === 'recommended' ? 'active-recommended' : 'tab-recommended'}`}
           >
             Recommended for You
           </button>
           <button
             onClick={() => setActiveTab('trending')}
-            style={{
-              padding: '12px 20px',
-              backgroundColor: activeTab === 'trending' ? 'var(--deep-ocean)' : 'var(--light-bg)', // Using deep-ocean for trending
-              color: activeTab === 'trending' ? 'white' : 'var(--deep-ocean)',
-              border: 'none',
-              borderRadius: '5px 5px 0 0',
-              cursor: 'pointer',
-              fontWeight: activeTab === 'trending' ? 'bold' : 'normal'
-            }}
+            className={`tab-btn ${activeTab === 'trending' ? 'active-trending' : 'tab-trending'}`}
           >
             Trending Now
           </button>
@@ -398,45 +315,25 @@ function ProductCatalog() {
       </div>
 
       {/* Search and Filter Section */}
-      <div style={{
-        backgroundColor: 'var(--card-bg)',
-        padding: '20px',
-        borderRadius: '10px',
-        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-        marginBottom: '30px'
-      }}>
-        <div style={{ display: 'flex', gap: '15px', alignItems: 'end', flexWrap: 'wrap' }}>
-          <div style={{ flex: 1, minWidth: '200px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: 'var(--text-main)' }}>Search Products:</label>
+      <div className="search-filter-container">
+        <div className="search-filter-wrapper">
+          <div className="filter-group">
+            <label className="filter-label">Search Products:</label>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name or description"
-              style={{
-                width: '100%',
-                padding: '10px',
-                borderRadius: '5px',
-                border: '1px solid var(--border-color)',
-                backgroundColor: 'var(--input-bg)',
-                color: 'var(--text-main)'
-              }}
+              className="search-input"
             />
           </div>
 
-          <div style={{ minWidth: '200px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: 'var(--text-main)' }}>Category:</label>
+          <div className="filter-group">
+            <label className="filter-label">Category:</label>
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px',
-                borderRadius: '5px',
-                border: '1px solid var(--border-color)',
-                backgroundColor: 'var(--input-bg)',
-                color: 'var(--text-main)'
-              }}
+              className="category-select"
             >
               <option value="">All Categories</option>
               <option value="Marine Fish">Marine Fish</option>
@@ -452,15 +349,7 @@ function ProductCatalog() {
 
           <button
             onClick={handleSearch}
-            style={{
-              padding: '12px 25px',
-              backgroundColor: 'var(--ocean-blue)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              height: 'fit-content'
-            }}
+            className="action-btn search-btn"
           >
             Search
           </button>
@@ -471,15 +360,7 @@ function ProductCatalog() {
               setSearchQuery('');
               fetchProducts();
             }}
-            style={{
-              padding: '12px 25px',
-              backgroundColor: '#95a5a6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              height: 'fit-content'
-            }}
+            className="action-btn clear-btn"
           >
             Clear
           </button>
@@ -488,28 +369,18 @@ function ProductCatalog() {
 
       {/* Product Catalog */}
       <div>
-        <h2 style={{ color: 'var(--ocean-blue)' }}>
+        <h2 className="catalog-section-title">
           {activeTab === 'recommended' && 'Recommended for You'}
           {activeTab === 'trending' && 'Trending Products'}
           {activeTab === 'all' && selectedCategory && `Products in ${selectedCategory.replace('-', ' ')}`}
           {activeTab === 'all' && !selectedCategory && 'Available Products'}
         </h2>
         {displayedProducts.length === 0 ? (
-          <p style={{
-            textAlign: 'center',
-            padding: '40px',
-            backgroundColor: 'var(--card-bg)',
-            borderRadius: '10px',
-            color: 'var(--text-main)'
-          }}>
+          <p className="no-products-message">
             No products found. Try adjusting your search criteria.
           </p>
         ) : (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-            gap: '25px'
-          }}>
+          <div className="products-grid">
             {displayedProducts.map(product => (
               <ProductCard
                 key={product._id || product.id}
@@ -529,56 +400,16 @@ function ProductCatalog() {
 
       {/* Shopping Cart Modal */}
       {showCart && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          zIndex: 2000,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          overflowY: 'auto',
-          padding: '20px'
-        }}>
-          <div style={{
-            backgroundColor: 'var(--light-bg)', // Use theme variable
-            borderRadius: '20px',
-            padding: '30px',
-            maxWidth: '1200px',
-            width: '100%',
-            marginTop: '20px',
-            marginBottom: '20px',
-            position: 'relative'
-          }}>
+        <div className="cart-modal-overlay">
+          <div className="cart-modal-content">
             <button
               onClick={() => setShowCart(false)}
-              style={{
-                position: 'absolute',
-                top: '20px',
-                right: '20px',
-                backgroundColor: '#e74c3c',
-                color: 'white',
-                border: 'none',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                fontSize: '1.5rem',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                boxShadow: '0 4px 10px rgba(231, 76, 60, 0.3)'
-              }}
+              className="close-cart-btn"
             >
               ×
             </button>
 
-            <h2 style={{
-              color: 'var(--ocean-blue)',
-              marginBottom: '30px',
-              fontSize: '2rem'
-            }}>
+            <h2 className="cart-modal-title">
               🛒 Your Shopping Cart
             </h2>
 

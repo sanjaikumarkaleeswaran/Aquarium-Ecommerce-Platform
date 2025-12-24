@@ -30,33 +30,33 @@ function CustomerSignup({ onNavigate }) {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    
+
     // Reset errors
     const newErrors = {};
-    
+
     // Validate name
     if (!name) {
       newErrors.name = "Name is required";
     } else if (!validateName(name)) {
       newErrors.name = "Name should contain only letters and spaces, minimum 2 characters";
     }
-    
+
     // Validate email
     if (!email) {
       newErrors.email = "Email is required";
     } else if (!validateEmail(email)) {
       newErrors.email = "Please enter a valid email address";
     }
-    
+
     // Validate password
     if (!password) {
       newErrors.password = "Password is required";
     } else if (!validatePassword(password)) {
       newErrors.password = "Password cannot be empty";
     }
-    
+
     setErrors(newErrors);
-    
+
     // If no errors, proceed with signup
     if (Object.keys(newErrors).length === 0) {
       setLoading(true);
@@ -66,7 +66,7 @@ function CustomerSignup({ onNavigate }) {
         alert("Customer signup successful! Please login.");
         // Use onNavigate to go to login
         onNavigate && onNavigate('login', 'customer');
-      } catch(err) {
+      } catch (err) {
         console.error("Signup error:", err);
         const errorMessage = err.response?.data?.message || err.message || "Signup failed. Please try again.";
         alert(errorMessage);
@@ -79,165 +79,79 @@ function CustomerSignup({ onNavigate }) {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSignup}>
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          <h2 style={{ 
-            color: '#0a4f70', 
-            fontSize: '2.2rem',
-            margin: '0 0 10px 0',
-            background: 'linear-gradient(90deg, #00a8cc, #0a4f70)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          }}>
+        <div className="text-center mb-4">
+          <h2 className="login-title">
             Customer Signup
           </h2>
-          <p style={{ color: '#00a8cc', margin: 0 }}>
+          <p className="login-subtitle">
             Join our community of aquarium enthusiasts
           </p>
         </div>
-        
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ 
-            display: 'block', 
-            marginBottom: '8px', 
-            fontWeight: 'bold', 
-            color: '#0a4f70' 
-          }}>
+
+        <div className="mb-3">
+          <label className="form-label">
             Full Name
           </label>
-          <input 
-            type="text" 
-            placeholder="Enter your full name" 
-            value={name} 
-            onChange={e=>setName(e.target.value)} 
-            className={errors.name ? 'error' : ''}
-            style={{
-              width: '100%',
-              padding: '14px',
-              borderRadius: '8px',
-              border: `2px solid ${errors.name ? '#ff6b6b' : '#b0d4e3'}`,
-              fontSize: '1rem',
-              boxSizing: 'border-box',
-              transition: 'border-color 0.3s'
-            }}
+          <input
+            type="text"
+            placeholder="Enter your full name"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            className={`form-input ${errors.name ? 'error' : ''}`}
           />
-          {errors.name && <div className="error-message" style={{ color: '#ff6b6b', marginTop: '8px' }}>{errors.name}</div>}
+          {errors.name && <div className="error-message">{errors.name}</div>}
         </div>
-        
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ 
-            display: 'block', 
-            marginBottom: '8px', 
-            fontWeight: 'bold', 
-            color: '#0a4f70' 
-          }}>
+
+        <div className="mb-3">
+          <label className="form-label">
             Email Address
           </label>
-          <input 
-            type="email" 
-            placeholder="Enter your email" 
-            value={email} 
-            onChange={e=>setEmail(e.target.value)} 
-            className={errors.email ? 'error' : ''}
-            style={{
-              width: '100%',
-              padding: '14px',
-              borderRadius: '8px',
-              border: `2px solid ${errors.email ? '#ff6b6b' : '#b0d4e3'}`,
-              fontSize: '1rem',
-              boxSizing: 'border-box',
-              transition: 'border-color 0.3s'
-            }}
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            className={`form-input ${errors.email ? 'error' : ''}`}
           />
-          {errors.email && <div className="error-message" style={{ color: '#ff6b6b', marginTop: '8px' }}>{errors.email}</div>}
+          {errors.email && <div className="error-message">{errors.email}</div>}
         </div>
-        
-        <div style={{ marginBottom: '25px' }}>
-          <label style={{ 
-            display: 'block', 
-            marginBottom: '8px', 
-            fontWeight: 'bold', 
-            color: '#0a4f70' 
-          }}>
+
+        <div className="mb-4">
+          <label className="form-label">
             Password
           </label>
-          <input 
-            type="password" 
-            placeholder="Create a password" 
-            value={password} 
-            onChange={e=>setPassword(e.target.value)} 
-            className={errors.password ? 'error' : ''}
-            style={{
-              width: '100%',
-              padding: '14px',
-              borderRadius: '8px',
-              border: `2px solid ${errors.password ? '#ff6b6b' : '#b0d4e3'}`,
-              fontSize: '1rem',
-              boxSizing: 'border-box',
-              transition: 'border-color 0.3s'
-            }}
+          <input
+            type="password"
+            placeholder="Create a password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            className={`form-input ${errors.password ? 'error' : ''}`}
           />
-          {errors.password && <div className="error-message" style={{ color: '#ff6b6b', marginTop: '8px' }}>{errors.password}</div>}
+          {errors.password && <div className="error-message">{errors.password}</div>}
         </div>
-        
-        <button 
-          type="submit" 
+
+        <button
+          type="submit"
           disabled={loading}
-          style={{
-            width: '100%',
-            padding: '14px',
-            backgroundColor: loading ? '#ccc' : '#00a8cc',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '1.1rem',
-            fontWeight: 'bold',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 4px 15px rgba(0, 168, 204, 0.3)'
-          }}
-          onMouseOver={(e) => {
-            if (!loading) {
-              e.target.style.backgroundColor = '#0a4f70';
-              e.target.style.transform = 'translateY(-2px)';
-              e.target.style.boxShadow = '0 6px 20px rgba(0, 168, 204, 0.4)';
-            }
-          }}
-          onMouseOut={(e) => {
-            if (!loading) {
-              e.target.style.backgroundColor = '#00a8cc';
-              e.target.style.transform = 'translateY(0)';
-              e.target.style.boxShadow = '0 4px 15px rgba(0, 168, 204, 0.3)';
-            }
-          }}
+          className="form-button"
         >
           {loading ? "Creating Account..." : "Create Account"}
         </button>
-        
-        <div className="link" style={{ textAlign: 'center', marginTop: '25px' }}>
+
+        <div className="link text-center mt-3">
           <p style={{ color: '#0a4f70' }}>
             Already have an account?{' '}
-            <span 
+            <span
               onClick={() => onNavigate && onNavigate('login', 'customer')}
-              style={{ 
-                color: '#00a8cc', 
-                textDecoration: 'none', 
-                fontWeight: 'bold',
-                cursor: 'pointer'
-              }}
+              className="login-link-plain"
             >
               Login
             </span>
           </p>
           <p>
-            <span 
+            <span
               onClick={() => onNavigate && onNavigate('home')}
-              style={{ 
-                color: '#00a8cc', 
-                textDecoration: 'none', 
-                fontWeight: 'bold',
-                cursor: 'pointer'
-              }}
+              className="login-link-plain"
             >
               ← Back to Home
             </span>

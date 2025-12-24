@@ -1,0 +1,108 @@
+/* Footer.css */
+.footer-container {
+    background-color: rgba(10, 79, 112, 0.9);
+    color: white;
+    padding: 30px 20px;
+    margin-top: 40px;
+    text-align: center;
+    border-top: 1px solid rgba(0, 168, 204, 0.3);
+    position: relative;
+}
+
+@keyframes lightning {
+    0% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    50% {
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.6), 0 0 35px rgba(255, 255, 255, 0.4);
+    }
+
+    100% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-brand {
+    text-align: left;
+}
+
+.footer-title {
+    color: #00a8cc;
+    margin: 0 0 10px 0;
+    font-size: 1.5rem;
+}
+
+.footer-subtitle {
+    margin: 0;
+    max-width: 300px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    /* text-shadow handled in animation */
+    animation: lightning 2s infinite alternate;
+}
+
+.footer-links {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.links-group-title {
+    color: #00a8cc;
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.link-item {
+    margin: 5px 0;
+}
+
+.footer-link {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-link:hover {
+    color: #00a8cc;
+}
+
+.footer-copyright {
+    border-top: 1px solid rgba(0, 168, 204, 0.2);
+    margin-top: 20px;
+    padding-top: 20px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-links {
+        width: 100%;
+        justify-content: space-between;
+    }
+}

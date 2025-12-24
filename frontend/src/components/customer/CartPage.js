@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../shared/Header';
 import UnifiedCart from '../shared/UnifiedCart';
+import './CartPage.css';
 import { placeOrder } from '../../services/orderService';
 import { getDisplayPrice } from '../../utils/userUtils';
 import { useToast } from '../shared/ToastProvider';
@@ -133,32 +134,20 @@ function CartPage() {
 
     if (loading) {
         return (
-            <div style={{
-                padding: '20px',
-                background: 'linear-gradient(135deg, #e0f7fa, #b2ebf2)',
-                minHeight: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
+            <div className="cart-loading-container">
                 <h2>Loading cart...</h2>
             </div>
         );
     }
 
     return (
-        <div style={{
-            padding: '20px',
-            background: 'var(--background-gradient)',
-            minHeight: '100vh',
-            fontFamily: 'Arial, sans-serif'
-        }}>
+        <div className="cart-page-container">
             <Header
                 title="Your Shopping Cart"
                 subtitle="Review your items and proceed to checkout"
             />
 
-            <div style={{ marginTop: '30px', maxWidth: '1400px', margin: '30px auto' }}>
+            <div className="cart-content-wrapper">
                 <UnifiedCart
                     cart={cart}
                     onUpdateQuantity={updateQuantity}

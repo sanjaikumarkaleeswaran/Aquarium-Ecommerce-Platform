@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDisplayPrice } from '../../utils/userUtils';
+import './UnifiedCart.css';
 
 /**
  * Unified Cart Component for all user roles (Customer, Retailer, Wholesaler)
@@ -38,33 +39,17 @@ function UnifiedCart({
 
     if (cart.length === 0) {
         return (
-            <div style={{
-                backgroundColor: 'var(--card-bg)',
-                padding: '50px',
-                borderRadius: '15px',
-                textAlign: 'center',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-            }}>
-                <div style={{ fontSize: '4rem', marginBottom: '20px' }}>🛒</div>
-                <h2 style={{ color: 'var(--ocean-blue)', marginBottom: '15px' }}>Your cart is empty</h2>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '25px' }}>Add some products to get started!</p>
+            <div className="cart-empty-container">
+                <div className="cart-empty-icon">🛒</div>
+                <h2 className="cart-empty-title">Your cart is empty</h2>
+                <p className="cart-empty-text">Add some products to get started!</p>
                 <button
                     onClick={() => navigate(
                         userRole === 'customer' ? '/customer/products' :
                             userRole === 'retailer' ? '/retailer/wholesaler-products' :
                                 '/products'
                     )}
-                    style={{
-                        padding: '12px 30px',
-                        backgroundColor: '#00a8cc',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '30px',
-                        fontSize: '1rem',
-                        cursor: 'pointer',
-                        fontWeight: 'bold',
-                        boxShadow: '0 4px 15px rgba(0, 168, 204, 0.3)'
-                    }}
+                    className="btn-continue-shopping"
                 >
                     Continue Shopping
                 </button>
@@ -73,31 +58,13 @@ function UnifiedCart({
     }
 
     return (
-        <div style={{ display: 'flex', gap: '30px', flexWrap: 'wrap' }}>
+        <div className="cart-layout">
             {/* Cart Items */}
-            <div style={{ flex: 2, minWidth: '300px' }}>
-                <div style={{
-                    backgroundColor: 'var(--card-bg)',
-                    borderRadius: '15px',
-                    overflow: 'hidden',
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-                }}>
-                    <div style={{
-                        padding: '20px',
-                        backgroundColor: 'var(--ocean-blue)',
-                        color: 'white',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                    }}>
+            <div className="cart-items-column">
+                <div className="cart-items-container">
+                    <div className="cart-header">
                         <h3 style={{ margin: 0, fontSize: '1.3rem' }}>🛒 Cart Items</h3>
-                        <span style={{
-                            backgroundColor: 'rgba(255,255,255,0.2)',
-                            padding: '5px 12px',
-                            borderRadius: '15px',
-                            fontSize: '0.9rem',
-                            fontWeight: 'bold'
-                        }}>
+                        <span className="cart-count-badge">
                             {cart.length} {cart.length === 1 ? 'item' : 'items'}
                         </span>
                     </div>
@@ -105,80 +72,45 @@ function UnifiedCart({
                     {cart.map((item, index) => {
                         const product = item.product || {};
                         return (
-                            <div key={index} style={{
-                                padding: '20px',
-                                borderBottom: index < cart.length - 1 ? '1px solid var(--border-color)' : 'none',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '20px'
-                            }}>
+                            <div key={index} className="cart-item">
                                 {/* Item Image */}
-                                <div style={{
-                                    width: '100px',
-                                    height: '100px',
-                                    borderRadius: '12px',
-                                    overflow: 'hidden',
-                                    backgroundColor: '#eee',
-                                    flexShrink: 0,
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                                }}>
+                                <div className="cart-item-image">
                                     <img
                                         src={getProductImage(product)}
                                         alt={product.name || 'Product'}
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                     />
                                 </div>
 
                                 {/* Item Details */}
-                                <div style={{ flex: 1 }}>
-                                    <h3 style={{ margin: '0 0 8px 0', color: 'var(--ocean-blue)', fontSize: '1.1rem' }}>
+                                <div className="cart-item-details">
+                                    <h3 className="item-name">
                                         {product.name || product.productName || 'Unknown Product'}
                                     </h3>
                                     {product.category && (
-                                        <p style={{ margin: '0 0 8px 0', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+                                        <p className="item-category">
                                             Category: {product.category}
                                         </p>
                                     )}
-                                    <p style={{ margin: 0, color: 'var(--ocean-blue)', fontSize: '1.05rem', fontWeight: 'bold' }}>
+                                    <p className="item-price">
                                         ₹{getDisplayPrice(product)} each
                                     </p>
                                 </div>
 
                                 {/* Quantity Controls */}
                                 {showQuantityControls && onUpdateQuantity ? (
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-main)' }}>
+                                    <div className="quantity-controls">
                                         <button
                                             onClick={() => onUpdateQuantity(index, -1)}
-                                            style={{
-                                                width: '35px',
-                                                height: '35px',
-                                                borderRadius: '50%',
-                                                border: '2px solid var(--ocean-blue)',
-                                                cursor: 'pointer',
-                                                backgroundColor: 'var(--input-bg)',
-                                                color: 'var(--ocean-blue)',
-                                                fontWeight: 'bold',
-                                                fontSize: '1.2rem'
-                                            }}
+                                            className="qty-btn"
                                         >
                                             −
                                         </button>
-                                        <span style={{ fontWeight: 'bold', fontSize: '1.2rem', minWidth: '30px', textAlign: 'center', color: 'var(--text-main)' }}>
+                                        <span className="qty-display">
                                             {item.quantity || 1}
                                         </span>
                                         <button
                                             onClick={() => onUpdateQuantity(index, 1)}
-                                            style={{
-                                                width: '35px',
-                                                height: '35px',
-                                                borderRadius: '50%',
-                                                border: '2px solid var(--ocean-blue)',
-                                                cursor: 'pointer',
-                                                backgroundColor: 'var(--input-bg)',
-                                                color: 'var(--ocean-blue)',
-                                                fontWeight: 'bold',
-                                                fontSize: '1.2rem'
-                                            }}
+                                            className="qty-btn"
                                         >
                                             +
                                         </button>
@@ -190,22 +122,13 @@ function UnifiedCart({
                                 )}
 
                                 {/* Total & Remove */}
-                                <div style={{ textAlign: 'right', minWidth: '120px' }}>
-                                    <p style={{ margin: '0 0 10px 0', fontWeight: 'bold', color: 'var(--ocean-blue)', fontSize: '1.2rem' }}>
+                                <div className="cart-item-total-section">
+                                    <p className="item-total-price">
                                         ₹{(getDisplayPrice(product) * (item.quantity || 1)).toFixed(2)}
                                     </p>
                                     <button
                                         onClick={() => onRemoveItem(index)}
-                                        style={{
-                                            color: '#e74c3c',
-                                            border: '1px solid #e74c3c',
-                                            background: 'var(--input-bg)',
-                                            cursor: 'pointer',
-                                            fontSize: '0.9rem',
-                                            padding: '6px 12px',
-                                            borderRadius: '5px',
-                                            fontWeight: 'bold'
-                                        }}
+                                        className="btn-remove"
                                     >
                                         🗑️ Remove
                                     </button>
@@ -217,37 +140,23 @@ function UnifiedCart({
             </div>
 
             {/* Order Summary */}
-            <div style={{ flex: 1, minWidth: '300px' }}>
-                <div style={{
-                    backgroundColor: 'var(--card-bg)',
-                    padding: '30px',
-                    borderRadius: '15px',
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-                    position: 'sticky',
-                    top: '20px',
-                    border: '2px solid var(--ocean-blue)'
-                }}>
-                    <h3 style={{
-                        margin: '0 0 25px 0',
-                        color: 'var(--ocean-blue)',
-                        fontSize: '1.5rem',
-                        paddingBottom: '15px',
-                        borderBottom: '2px solid var(--ocean-blue)'
-                    }}>
+            <div className="cart-summary-column">
+                <div className="order-summary-card">
+                    <h3 className="summary-title">
                         💳 Order Summary
                     </h3>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px', fontSize: '1.05rem' }}>
+                    <div className="summary-row">
                         <span style={{ color: 'var(--text-secondary)' }}>Subtotal ({cart.length} items)</span>
                         <span style={{ fontWeight: 'bold', color: 'var(--ocean-blue)' }}>₹{calculateTotal().toFixed(2)}</span>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid var(--border-color)' }}>
+                    <div className="summary-row" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '20px' }}>
                         <span style={{ color: 'var(--text-secondary)' }}>Shipping</span>
                         <span style={{ color: '#2ecc71', fontWeight: 'bold' }}>Free</span>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px', fontSize: '1.3rem', paddingTop: '10px' }}>
+                    <div className="summary-row total">
                         <span style={{ fontWeight: 'bold', color: 'var(--ocean-blue)' }}>Total</span>
                         <span style={{ fontWeight: 'bold', color: 'var(--ocean-blue)' }}>₹{calculateTotal().toFixed(2)}</span>
                     </div>
@@ -255,32 +164,17 @@ function UnifiedCart({
                     <button
                         onClick={onCheckout}
                         disabled={processing}
+                        className="btn-checkout"
                         style={{
-                            width: '100%',
-                            padding: '16px',
                             backgroundColor: processing ? '#95a5a6' : '#2ecc71',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '30px',
-                            fontSize: '1.15rem',
-                            fontWeight: 'bold',
                             cursor: processing ? 'not-allowed' : 'pointer',
                             boxShadow: processing ? 'none' : '0 6px 20px rgba(46, 204, 113, 0.4)',
-                            textTransform: 'uppercase',
-                            letterSpacing: '1px'
                         }}
                     >
                         {processing ? '⏳ Processing...' : '🛍️ Proceed to Checkout'}
                     </button>
 
-                    <div style={{
-                        marginTop: '20px',
-                        padding: '15px',
-                        backgroundColor: '#e8f5e9',
-                        borderRadius: '10px',
-                        fontSize: '0.9rem',
-                        color: '#2e7d32'
-                    }}>
+                    <div className="secure-checkout-badge">
                         <p style={{ margin: 0 }}>✓ Secure checkout</p>
                         <p style={{ margin: '5px 0 0 0' }}>✓ 100% satisfaction guaranteed</p>
                     </div>

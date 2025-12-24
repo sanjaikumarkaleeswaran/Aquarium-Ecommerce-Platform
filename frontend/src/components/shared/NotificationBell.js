@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getNotifications, getUnreadCount, markAsRead, markAllAsRead, deleteNotification } from '../../services/notificationService';
 import { useNavigate } from 'react-router-dom';
+import './NotificationBell.css';
 
 function NotificationBell() {
     const [notifications, setNotifications] = useState([]);
@@ -119,47 +120,15 @@ function NotificationBell() {
     };
 
     return (
-        <div ref={dropdownRef} style={{ position: 'relative', display: 'inline-block' }}>
+        <div ref={dropdownRef} className="notification-container">
             {/* Notification Bell Icon */}
             <button
                 onClick={handleBellClick}
-                style={{
-                    position: 'relative',
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontSize: '1.5rem',
-                    padding: '10px',
-                    borderRadius: '50%',
-                    transition: 'all 0.3s',
-                    color: '#0a4f70'
-                }}
-                onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(0, 168, 204, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                }}
+                className="notification-bell-btn"
             >
                 🔔
                 {unreadCount > 0 && (
-                    <span style={{
-                        position: 'absolute',
-                        top: '8px',
-                        right: '8px',
-                        backgroundColor: '#e74c3c',
-                        color: 'white',
-                        borderRadius: '50%',
-                        width: '20px',
-                        height: '20px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '0.7rem',
-                        fontWeight: 'bold',
-                        border: '2px solid white',
-                        animation: 'pulse 2s infinite'
-                    }}>
+                    <span className="notification-badge">
                         {unreadCount > 99 ? '99+' : unreadCount}
                     </span>
                 )}
@@ -167,47 +136,14 @@ function NotificationBell() {
 
             {/* Dropdown Panel */}
             {showDropdown && (
-                <div style={{
-                    position: 'absolute',
-                    top: '100%',
-                    right: 0,
-                    marginTop: '10px',
-                    width: '400px',
-                    maxHeight: '500px',
-                    backgroundColor: 'white',
-                    borderRadius: '15px',
-                    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)',
-                    zIndex: 1000,
-                    overflow: 'hidden',
-                    border: '1px solid rgba(0, 168, 204, 0.2)'
-                }}>
+                <div className="notification-dropdown">
                     {/* Header */}
-                    <div style={{
-                        padding: '20px',
-                        backgroundColor: 'linear-gradient(135deg, #0a4f70, #00a8cc)',
-                        background: 'linear-gradient(135deg, #0a4f70, #00a8cc)',
-                        color: 'white',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                    }}>
-                        <h3 style={{ margin: 0, fontSize: '1.2rem' }}>🔔 Notifications</h3>
+                    <div className="dropdown-header">
+                        <h3 className="dropdown-title">🔔 Notifications</h3>
                         {notifications.length > 0 && unreadCount > 0 && (
                             <button
                                 onClick={handleMarkAllRead}
-                                style={{
-                                    padding: '6px 12px',
-                                    backgroundColor: 'rgba(255,255,255,0.2)',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '15px',
-                                    cursor: 'pointer',
-                                    fontSize: '0.8rem',
-                                    fontWeight: 'bold',
-                                    transition: 'background-color 0.3s'
-                                }}
-                                onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.3)'}
-                                onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.2)'}
+                                className="mark-all-btn"
                             >
                                 Mark all read
                             </button>
@@ -215,71 +151,39 @@ function NotificationBell() {
                     </div>
 
                     {/* Notifications List */}
-                    <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                    <div className="notifications-list">
                         {loading ? (
-                            <div style={{ padding: '40px', textAlign: 'center', color: '#888' }}>
+                            <div className="loading-state">
                                 <div>Loading notifications...</div>
                             </div>
                         ) : notifications.length === 0 ? (
-                            <div style={{ padding: '40px', textAlign: 'center', color: '#888' }}>
-                                <div style={{ fontSize: '3rem', marginBottom: '10px' }}>🔕</div>
+                            <div className="empty-state">
+                                <div className="empty-icon">🔕</div>
                                 <div>No notifications yet</div>
-                                <div style={{ fontSize: '0.85rem', marginTop: '5px' }}>You're all caught up!</div>
+                                <div className="empty-subtext">You're all caught up!</div>
                             </div>
                         ) : (
                             notifications.map((notification) => (
                                 <div
                                     key={notification._id}
                                     onClick={() => handleNotificationClick(notification)}
-                                    style={{
-                                        padding: '15px 20px',
-                                        borderBottom: '1px solid #f0f0f0',
-                                        cursor: 'pointer',
-                                        backgroundColor: notification.isRead ? 'white' : '#e8f5ff',
-                                        transition: 'background-color 0.3s',
-                                        position: 'relative'
-                                    }}
-                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
-                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = notification.isRead ? 'white' : '#e8f5ff'}
+                                    className={`notification-item ${notification.isRead ? 'read' : 'unread'}`}
                                 >
-                                    <div style={{ display: 'flex', gap: '12px', alignItems: 'start' }}>
+                                    <div className="notification-content-wrapper">
                                         {/* Icon */}
-                                        <div style={{
-                                            fontSize: '1.5rem',
-                                            flexShrink: 0,
-                                            width: '40px',
-                                            height: '40px',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            backgroundColor: notification.priority === 'high' ? '#ffe0e0' : '#e8f5ff',
-                                            borderRadius: '50%'
-                                        }}>
+                                        <div className={`notification-icon-wrapper ${notification.priority === 'high' ? 'high-priority' : 'normal-priority'}`}>
                                             {getNotificationIcon(notification.type)}
                                         </div>
 
                                         {/* Content */}
-                                        <div style={{ flex: 1 }}>
-                                            <div style={{
-                                                fontWeight: notification.isRead ? 'normal' : 'bold',
-                                                color: '#0a4f70',
-                                                marginBottom: '4px',
-                                                fontSize: '0.95rem'
-                                            }}>
+                                        <div className="notification-text-content">
+                                            <div className={`notification-title ${!notification.isRead ? 'bold' : ''}`}>
                                                 {notification.title}
                                             </div>
-                                            <div style={{
-                                                color: '#666',
-                                                fontSize: '0.85rem',
-                                                marginBottom: '6px',
-                                                lineHeight: '1.4'
-                                            }}>
+                                            <div className="notification-message">
                                                 {notification.message}
                                             </div>
-                                            <div style={{
-                                                color: '#999',
-                                                fontSize: '0.75rem'
-                                            }}>
+                                            <div className="notification-time">
                                                 {getTimeAgo(notification.createdAt)}
                                             </div>
                                         </div>
@@ -287,17 +191,7 @@ function NotificationBell() {
                                         {/* Delete Button */}
                                         <button
                                             onClick={(e) => handleDelete(e, notification._id)}
-                                            style={{
-                                                background: 'none',
-                                                border: 'none',
-                                                cursor: 'pointer',
-                                                color: '#ccc',
-                                                fontSize: '1.2rem',
-                                                padding: '5px',
-                                                transition: 'color 0.3s'
-                                            }}
-                                            onMouseEnter={(e) => e.target.style.color = '#e74c3c'}
-                                            onMouseLeave={(e) => e.target.style.color = '#ccc'}
+                                            className="delete-notification-btn"
                                         >
                                             ×
                                         </button>
@@ -305,16 +199,7 @@ function NotificationBell() {
 
                                     {/* Unread indicator */}
                                     {!notification.isRead && (
-                                        <div style={{
-                                            position: 'absolute',
-                                            left: '8px',
-                                            top: '50%',
-                                            transform: 'translateY(-50%)',
-                                            width: '8px',
-                                            height: '8px',
-                                            backgroundColor: '#00a8cc',
-                                            borderRadius: '50%'
-                                        }} />
+                                        <div className="unread-indicator" />
                                     )}
                                 </div>
                             ))
@@ -322,18 +207,6 @@ function NotificationBell() {
                     </div>
                 </div>
             )}
-
-            {/* CSS Animation */}
-            <style>{`
-        @keyframes pulse {
-          0%, 100% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.1);
-          }
-        }
-      `}</style>
         </div>
     );
 }
