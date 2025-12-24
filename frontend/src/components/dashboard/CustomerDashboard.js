@@ -6,6 +6,7 @@ import { getOrders } from '../../services/orderService';
 import { getPersonalizedRecommendations, recordUserInteraction } from '../../services/recommendationService';
 import { getDisplayPrice } from '../../utils/userUtils';
 import ProductCard from '../shared/ProductCard';
+import './CustomerDashboard.css';
 
 function CustomerDashboard() {
   const [user, setUser] = useState({ name: 'John Doe' }); // Mock user data
@@ -123,114 +124,38 @@ function CustomerDashboard() {
 
   if (loading) {
     return (
-      <div style={{
-        padding: '20px',
-        background: 'var(--background-gradient)',
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontFamily: 'Arial, sans-serif',
-        color: 'var(--text-main)'
-      }}>
-        <h2 style={{ color: 'var(--ocean-blue)' }}>Loading dashboard...</h2>
+      <div className="dashboard-loading">
+        <h2>Loading dashboard...</h2>
       </div>
     );
   }
 
   return (
-    <div style={{
-      padding: '20px',
-      background: 'var(--background-gradient)',
-      minHeight: '100vh',
-      fontFamily: 'Arial, sans-serif'
-    }}>
+    <div className="dashboard-container">
       <Header
         title="Customer Dashboard"
         subtitle={`Welcome back, ${user?.name || 'Customer'}! Here's what's new in your aquarium world`}
       />
 
-      <div style={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        marginBottom: '30px',
-        marginTop: '20px'
-      }}>
-        <div style={{ display: 'flex', gap: '15px' }}>
+      <div className="action-bar">
+        <div className="action-buttons">
           <button
             onClick={() => navigate('/customer/cart')}
-            style={{
-              padding: '12px 25px',
-              backgroundColor: '#e74c3c',
-              color: 'white',
-              border: 'none',
-              borderRadius: '30px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              boxShadow: '0 4px 10px rgba(231, 76, 60, 0.3)',
-              transition: 'all 0.3s ease',
-              fontSize: '1rem'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.transform = 'translateY(-3px)';
-              e.target.style.boxShadow = '0 6px 15px rgba(231, 76, 60, 0.4)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.transform = 'translateY(0)';
-              e.target.style.boxShadow = '0 4px 10px rgba(231, 76, 60, 0.3)';
-            }}
+            className="action-btn btn-cart"
           >
             🛒 View Cart ({cart.length})
           </button>
 
           <button
             onClick={() => navigate('/customer/orders')}
-            style={{
-              padding: '12px 25px',
-              backgroundColor: '#f39c12',
-              color: 'white',
-              border: 'none',
-              borderRadius: '30px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              boxShadow: '0 4px 10px rgba(243, 156, 18, 0.3)',
-              transition: 'all 0.3s ease',
-              fontSize: '1rem'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.transform = 'translateY(-3px)';
-              e.target.style.boxShadow = '0 6px 15px rgba(243, 156, 18, 0.4)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.transform = 'translateY(0)';
-              e.target.style.boxShadow = '0 4px 10px rgba(243, 156, 18, 0.3)';
-            }}
+            className="action-btn btn-orders"
           >
             📦 My Orders ({myOrders.length})
           </button>
 
           <button
             onClick={() => navigate('/customer/products')}
-            style={{
-              padding: '12px 25px',
-              backgroundColor: '#00a8cc',
-              color: 'white',
-              border: 'none',
-              borderRadius: '30px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              boxShadow: '0 4px 10px rgba(0, 168, 204, 0.3)',
-              transition: 'all 0.3s ease',
-              fontSize: '1rem'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.transform = 'translateY(-3px)';
-              e.target.style.boxShadow = '0 6px 15px rgba(0, 168, 204, 0.4)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.transform = 'translateY(0)';
-              e.target.style.boxShadow = '0 4px 10px rgba(0, 168, 204, 0.3)';
-            }}
+            className="action-btn btn-browse"
           >
             Browse All Products
           </button>
@@ -238,270 +163,101 @@ function CustomerDashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '20px',
-        marginBottom: '30px'
-      }}>
-        <div style={{
-          backgroundColor: 'var(--card-bg)',
-          padding: '20px',
-          borderRadius: '15px',
-          boxShadow: '0 6px 15px rgba(0, 0, 0, 0.08)',
-          border: '1px solid var(--border-color)',
-          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-          cursor: 'pointer'
-        }}
+      <div className="stats-grid">
+        <div
+          className="stat-card"
           onClick={() => navigate('/customer/cart')}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-5px)';
-            e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
-          }}
         >
-          <h3 style={{
-            color: 'var(--ocean-blue)',
-            margin: '0 0 10px 0',
-            fontSize: '1rem'
-          }}>
-            🛒 Your Cart
-          </h3>
-          <p style={{
-            fontSize: '2rem',
-            fontWeight: 'bold',
-            color: '#00a8cc',
-            margin: '0'
-          }}>
+          <h3>🛒 Your Cart</h3>
+          <p className="stat-value" style={{ color: '#00a8cc' }}>
             {cart.length}
           </p>
-          <p style={{
-            color: 'var(--text-secondary)',
-            margin: '5px 0 0 0',
-            fontSize: '0.9rem'
-          }}>
-            items
-          </p>
+          <p className="stat-label">items</p>
         </div>
 
-        <div style={{
-          backgroundColor: 'var(--card-bg)',
-          padding: '20px',
-          borderRadius: '15px',
-          boxShadow: '0 6px 15px rgba(0, 0, 0, 0.08)',
-          border: '1px solid var(--border-color)',
-          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-          cursor: 'pointer'
-        }}
+        <div
+          className="stat-card"
           onClick={() => navigate('/customer/products')}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-5px)';
-            e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
-          }}
         >
-          <h3 style={{
-            color: 'var(--ocean-blue)',
-            margin: '0 0 10px 0',
-            fontSize: '1rem'
-          }}>
-            🐠 Products
-          </h3>
-          <p style={{
-            fontSize: '2rem',
-            fontWeight: 'bold',
-            color: '#4ecdc4',
-            margin: '0'
-          }}>
+          <h3>🐠 Products</h3>
+          <p className="stat-value" style={{ color: '#4ecdc4' }}>
             {totalProductsCount}
           </p>
-          <p style={{
-            color: 'var(--text-secondary)',
-            margin: '5px 0 0 0',
-            fontSize: '0.9rem'
-          }}>
-            available
-          </p>
+          <p className="stat-label">available</p>
         </div>
 
-        <div style={{
-          backgroundColor: 'var(--card-bg)',
-          padding: '20px',
-          borderRadius: '15px',
-          boxShadow: '0 6px 15px rgba(0, 0, 0, 0.08)',
-          border: '1px solid var(--border-color)',
-          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-          cursor: 'pointer'
-        }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-5px)';
-            e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
-          }}
-        >
-          <h3 style={{
-            color: 'var(--ocean-blue)',
-            margin: '0 0 10px 0',
-            fontSize: '1rem'
-          }}>
-            🏆 Rewards
-          </h3>
-          <p style={{
-            fontSize: '2rem',
-            fontWeight: 'bold',
-            color: '#1dd1a1',
-            margin: '0'
-          }}>
+        <div className="stat-card">
+          <h3>🏆 Rewards</h3>
+          <p className="stat-value" style={{ color: '#1dd1a1' }}>
             1250
           </p>
-          <p style={{
-            color: 'var(--text-secondary)',
-            margin: '5px 0 0 0',
-            fontSize: '0.9rem'
-          }}>
-            points
-          </p>
+          <p className="stat-label">points</p>
         </div>
 
-        <div style={{
-          backgroundColor: 'var(--card-bg)',
-          padding: '20px',
-          borderRadius: '15px',
-          boxShadow: '0 6px 15px rgba(0, 0, 0, 0.08)',
-          border: '1px solid var(--border-color)',
-          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-          cursor: 'pointer'
-        }}
+        <div
+          className="stat-card"
           onClick={() => navigate('/customer/orders')}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-5px)';
-            e.currentTarget.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.15)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.08)';
-          }}
         >
-          <h3 style={{
-            color: 'var(--ocean-blue)',
-            margin: '0 0 10px 0',
-            fontSize: '1rem'
-          }}>
-            📦 Orders
-          </h3>
-          <p style={{
-            fontSize: '2rem',
-            fontWeight: 'bold',
-            color: '#f368e0',
-            margin: '0'
-          }}>
+          <h3>📦 Orders</h3>
+          <p className="stat-value" style={{ color: '#f368e0' }}>
             {myOrders.length}
           </p>
-          <p style={{
-            color: 'var(--text-secondary)',
-            margin: '5px 0 0 0',
-            fontSize: '0.9rem'
-          }}>
-            this month
-          </p>
+          <p className="stat-label">this month</p>
         </div>
       </div>
 
       {/* My Recent Orders Section */}
-      <div style={{ marginBottom: '40px' }}>
-        <h2 style={{
-          color: 'var(--ocean-blue)',
-          margin: '0 0 20px 0',
-          fontSize: '1.8rem'
-        }}>
+      <div className="section-container">
+        <h2 className="section-title" style={{ marginBottom: '20px' }}>
           📦 My Recent Orders
         </h2>
 
         {myOrders.length === 0 ? (
-          <div style={{
-            backgroundColor: 'var(--card-bg)',
-            padding: '40px',
-            borderRadius: '15px',
-            textAlign: 'center',
-            color: 'var(--text-secondary)',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.05)'
-          }}>
+          <div className="empty-orders">
             <p style={{ fontSize: '1.1rem', marginBottom: '15px' }}>You haven't placed any orders yet.</p>
             <button
               onClick={() => navigate('/customer/products')}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#00a8cc',
-                color: 'white',
-                border: 'none',
-                borderRadius: '25px',
-                cursor: 'pointer',
-                fontWeight: 'bold'
-              }}
+              className="start-shopping-btn"
             >
               Start Shopping
             </button>
           </div>
         ) : (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-            gap: '25px'
-          }}>
+          <div className="orders-grid">
             {myOrders.slice(0, 3).map(order => (
               <div
                 key={order._id || order.id}
-                style={{
-                  backgroundColor: 'var(--card-bg)',
-                  padding: '20px',
-                  borderRadius: '15px',
-                  boxShadow: '0 6px 15px rgba(0, 0, 0, 0.08)',
-                  border: '1px solid var(--border-color)',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s'
-                }}
+                className="order-card-item"
                 onClick={() => navigate('/customer/orders')}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
+                <div className="order-card-header">
                   <div>
-                    <span style={{ fontWeight: 'bold', color: 'var(--ocean-blue)' }}>#{order.orderNumber?.slice(-6) || (order._id && order._id.slice(-6))}</span>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                    <span className="order-id">#{order.orderNumber?.slice(-6) || (order._id && order._id.slice(-6))}</span>
+                    <div className="order-date">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </div>
                   </div>
-                  <span style={{
-                    padding: '5px 12px',
-                    borderRadius: '20px',
-                    backgroundColor: order.status === 'delivered' ? '#2ecc71' :
-                      order.status === 'shipped' ? '#3498db' : '#f39c12',
-                    color: 'white',
-                    fontSize: '0.85rem',
-                    fontWeight: 'bold',
-                    height: 'fit-content'
-                  }}>
+                  <span
+                    className="order-status-badge"
+                    style={{
+                      backgroundColor: order.status === 'delivered' ? '#2ecc71' :
+                        order.status === 'shipped' ? '#3498db' : '#f39c12',
+                    }}
+                  >
                     {order.status.toUpperCase()}
                   </span>
                 </div>
 
-                <div style={{ marginBottom: '15px' }}>
-                  <p style={{ margin: '5px 0', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                <div className="order-details" style={{ marginBottom: '15px' }}>
+                  <p>
                     <strong>Items:</strong> {order.items.length}
                   </p>
-                  <p style={{ margin: '5px 0', fontSize: '0.95rem', fontWeight: 'bold', color: '#2ecc71' }}>
+                  <p className="order-total">
                     <strong>Total:</strong> ₹{order.totalAmount}
                   </p>
                 </div>
 
-                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '10px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                <div className="order-seller">
                   Sold by: <strong>{order.sellerName}</strong>
                 </div>
               </div>
@@ -511,27 +267,14 @@ function CustomerDashboard() {
       </div>
 
       {/* Recommended Products Section */}
-      <div style={{ marginBottom: '40px' }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '20px'
-        }}>
-          <h2 style={{
-            color: 'var(--ocean-blue)',
-            margin: 0,
-            fontSize: '1.8rem'
-          }}>
+      <div className="section-container">
+        <div className="section-header">
+          <h2 className="section-title">
             🔥 Recommended for You
           </h2>
           <a
             href="#"
-            style={{
-              color: '#00a8cc',
-              textDecoration: 'none',
-              fontWeight: 'bold'
-            }}
+            className="view-all-link"
             onClick={(e) => {
               e.preventDefault();
               navigate('/customer/products?tab=recommended');
@@ -540,11 +283,7 @@ function CustomerDashboard() {
             View All →
           </a>
         </div>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-          gap: '25px'
-        }}>
+        <div className="products-grid">
           {recommendedProducts.map(product => (
             <ProductCard
               key={product._id || product.id}
@@ -560,26 +299,13 @@ function CustomerDashboard() {
 
       {/* All Products Section */}
       <div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '20px'
-        }}>
-          <h2 style={{
-            color: 'var(--ocean-blue)',
-            margin: 0,
-            fontSize: '1.8rem'
-          }}>
+        <div className="section-header">
+          <h2 className="section-title">
             All Products
           </h2>
           <a
             href="#"
-            style={{
-              color: '#00a8cc',
-              textDecoration: 'none',
-              fontWeight: 'bold'
-            }}
+            className="view-all-link"
             onClick={(e) => {
               e.preventDefault();
               navigate('/customer/products');
@@ -588,11 +314,7 @@ function CustomerDashboard() {
             View All →
           </a>
         </div>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-          gap: '25px'
-        }}>
+        <div className="products-grid">
           {products.map(product => (
             <ProductCard
               key={product._id || product.id}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { analyzeMessage } from '../../services/chatService';
+import './DrFishChatbot.css';
 
 const DrFishChatbot = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -76,128 +77,40 @@ const DrFishChatbot = () => {
             {/* Floating Action Button */}
             <button
                 onClick={toggleChat}
-                style={{
-                    position: 'fixed',
-                    bottom: '100px', // Above the comparison bar
-                    right: '30px',
-                    width: '60px',
-                    height: '60px',
-                    borderRadius: '50%',
-                    backgroundColor: '#00a8cc',
-                    color: 'white',
-                    border: 'none',
-                    boxShadow: '0 4px 15px rgba(0, 168, 204, 0.4)',
-                    cursor: 'pointer',
-                    zIndex: 9999, // High z-index to sit on top
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '30px',
-                    transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-                }}
-                onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-                onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                className="chatbot-fab"
             >
                 {isOpen ? '✕' : '🩺'}
                 {!isOpen && (
-                    <span style={{
-                        position: 'absolute',
-                        top: '-5px',
-                        right: '-5px',
-                        width: '15px',
-                        height: '15px',
-                        backgroundColor: '#4caf50',
-                        borderRadius: '50%',
-                        border: '2px solid white'
-                    }}></span>
+                    <span className="chatbot-status"></span>
                 )}
             </button>
 
             {/* Chat Window */}
-            <div style={{
-                position: 'fixed',
-                bottom: '170px',
-                right: '30px',
-                width: '350px',
-                height: '500px',
-                backgroundColor: 'var(--card-bg)', // Adapts to dark mode
-                borderRadius: '20px',
-                boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)',
-                display: isOpen ? 'flex' : 'none',
-                flexDirection: 'column',
-                zIndex: 9999,
-                border: '1px solid var(--border-color)',
-                overflow: 'hidden',
-                animation: 'slideUp 0.3s ease-out'
-            }}>
-                <style>
-                    {`@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`}
-                </style>
+            <div className={`chatbot-window ${isOpen ? 'open' : ''}`}>
 
                 {/* Header */}
-                <div style={{
-                    padding: '20px',
-                    background: 'linear-gradient(135deg, var(--ocean-blue), var(--aqua-blue))',
-                    color: 'white',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '15px'
-                }}>
-                    <div style={{
-                        width: '40px',
-                        height: '40px',
-                        backgroundColor: 'white',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '24px'
-                    }}>
+                <div className="chatbot-header">
+                    <div className="chatbot-avatar">
                         🐟
                     </div>
-                    <div>
-                        <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'white' }}>Dr. Fish AI</h3>
-                        <span style={{ fontSize: '0.8rem', opacity: 0.9 }}>Aquarium Specialist</span>
+                    <div className="chatbot-title">
+                        <h3>Dr. Fish AI</h3>
+                        <div className="chatbot-subtitle">Aquarium Specialist</div>
                     </div>
                 </div>
 
                 {/* Messages Area */}
-                <div style={{
-                    flex: 1,
-                    padding: '20px',
-                    overflowY: 'auto',
-                    backgroundColor: 'var(--input-bg)', // Light bg in light mode, dark in dark mode
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '15px'
-                }}>
+                <div className="chatbot-messages">
                     {messages.map((msg) => (
                         <div
                             key={msg.id}
-                            style={{
-                                alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                                maxWidth: '80%',
-                                padding: '12px 16px',
-                                borderRadius: msg.sender === 'user' ? '15px 15px 0 15px' : '15px 15px 15px 0',
-                                backgroundColor: msg.sender === 'user' ? 'var(--ocean-blue)' : 'var(--card-bg)',
-                                color: msg.sender === 'user' ? 'white' : 'var(--text-main)',
-                                boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
-                                border: msg.sender === 'bot' ? '1px solid var(--border-color)' : 'none'
-                            }}
+                            className={`message-bubble ${msg.sender === 'user' ? 'message-user' : 'message-bot'}`}
                         >
                             {renderText(msg.text)}
                         </div>
                     ))}
                     {isTyping && (
-                        <div style={{
-                            alignSelf: 'flex-start',
-                            padding: '10px 15px',
-                            backgroundColor: 'var(--card-bg)',
-                            borderRadius: '15px',
-                            color: 'var(--text-secondary)',
-                            fontSize: '0.9rem',
-                            border: '1px solid var(--border-color)'
-                        }}>
+                        <div className="typing-indicator">
                             Dr. Fish is thinking... 🌊
                         </div>
                     )}
@@ -205,43 +118,17 @@ const DrFishChatbot = () => {
                 </div>
 
                 {/* Input Area */}
-                <form onSubmit={handleSendMessage} style={{
-                    padding: '15px',
-                    backgroundColor: 'var(--card-bg)',
-                    borderTop: '1px solid var(--border-color)',
-                    display: 'flex',
-                    gap: '10px'
-                }}>
+                <form onSubmit={handleSendMessage} className="chatbot-input-area">
                     <input
                         type="text"
                         value={inputText}
                         onChange={(e) => setInputText(e.target.value)}
                         placeholder="Ask Dr. Fish..."
-                        style={{
-                            flex: 1,
-                            padding: '12px',
-                            borderRadius: '25px',
-                            border: '1px solid var(--border-color)',
-                            backgroundColor: 'var(--input-bg)',
-                            color: 'var(--text-main)',
-                            outline: 'none'
-                        }}
+                        className="chatbot-input"
                     />
                     <button
                         type="submit"
-                        style={{
-                            width: '45px',
-                            height: '45px',
-                            borderRadius: '50%',
-                            backgroundColor: 'var(--ocean-blue)',
-                            color: 'white',
-                            border: 'none',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '1.2rem'
-                        }}
+                        className="chatbot-send-btn"
                     >
                         ➤
                     </button>

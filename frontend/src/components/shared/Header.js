@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 import NotificationBell from './NotificationBell';
+import './Header.css';
 
 const Header = ({ title, subtitle }) => {
   const navigate = useNavigate();
@@ -32,100 +33,39 @@ const Header = ({ title, subtitle }) => {
   const currentRole = roleConfig[userRole] || roleConfig.guest;
 
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: '20px',
-      backgroundColor: 'var(--card-bg)', // Use theme variable
-      borderRadius: '15px',
-      boxShadow: '0 8px 30px rgba(0, 0, 0, 0.1)',
-      border: '1px solid var(--border-color)', // Use theme variable
-      position: 'relative'
-    }}>
-      <style>
-        {`
-          @keyframes lightning {
-            0% {
-              text-shadow: 0 0 5px rgba(0, 168, 204, 0.5), 0 0 10px rgba(0, 168, 204, 0.3);
-            }
-            50% {
-              text-shadow: 0 0 15px rgba(0, 168, 204, 0.8), 0 0 25px rgba(0, 168, 204, 0.6), 0 0 35px rgba(0, 168, 204, 0.4);
-            }
-            100% {
-              text-shadow: 0 0 10px rgba(0, 168, 204, 0.7), 0 0 20px rgba(0, 168, 204, 0.5), 0 0 30px rgba(0, 168, 204, 0.3);
-            }
-          }
-        `}
-      </style>
-      <div>
-        <h1 style={{
-          color: 'var(--ocean-blue)', // Use variable
-          margin: 0,
-          fontSize: '2.2rem',
-          // Kept gradient but updated to use variables logic theoretically (using fallbacks or direct values if var not supported in gradient string easily without string interpolation)
-          background: 'linear-gradient(90deg, var(--aqua-blue), var(--ocean-blue))',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text'
-        }}>
+    <div className="header-container">
+      <div className="header-left">
+        <h1 className="header-title">
           {title}
         </h1>
         {subtitle && (
-          <p style={{
-            color: '#00a8cc',
-            margin: '5px 0 0 0',
-            fontSize: '1rem',
-            textShadow: '0 0 10px rgba(0, 168, 204, 0.7), 0 0 20px rgba(0, 168, 204, 0.5), 0 0 30px rgba(0, 168, 204, 0.3)',
-            animation: 'lightning 2s infinite alternate'
-          }}>
+          <p className="header-subtitle">
             {subtitle}
           </p>
         )}
       </div>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '15px'
-      }}>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          gap: '5px'
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px'
-          }}>
+      <div className="header-right">
+        <div className="user-info">
+          <div className="user-details">
             <span
               onClick={() => {
                 if (userRole === 'customer') navigate('/customer/profile');
                 else if (userRole === 'retailer') navigate('/retailer/profile');
                 // Add other roles if they have profiles
               }}
-              style={{
-                color: 'var(--ocean-blue)',
-                fontWeight: '600',
-                fontSize: '1rem',
-                cursor: 'pointer',
-                textDecoration: 'underline'
-              }}
+              className="user-name"
               title="Go to Profile"
             >
               {userName}
             </span>
-            <span style={{
-              backgroundColor: currentRole.bgColor,
-              color: currentRole.color,
-              padding: '4px 12px',
-              borderRadius: '12px',
-              fontSize: '0.85rem',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              border: `1px solid ${currentRole.color}`
-            }}>
+            <span
+              className="user-role-badge"
+              style={{
+                backgroundColor: currentRole.bgColor,
+                color: currentRole.color,
+                border: `1px solid ${currentRole.color}`
+              }}
+            >
               {currentRole.label}
             </span>
           </div>
@@ -134,51 +74,13 @@ const Header = ({ title, subtitle }) => {
         <button
           onClick={toggleTheme}
           title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-          style={{
-            padding: '8px',
-            backgroundColor: 'transparent',
-            color: 'var(--ocean-blue)',
-            border: '1px solid var(--ocean-blue)',
-            borderRadius: '50%',
-            cursor: 'pointer',
-            fontSize: '1.2rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '40px',
-            height: '40px',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.transform = 'scale(1.1)';
-            e.target.style.backgroundColor = 'rgba(0,0,0,0.05)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.transform = 'scale(1)';
-            e.target.style.backgroundColor = 'transparent';
-          }}
+          className="theme-toggle-btn"
         >
           {theme === 'light' ? '🌙' : '☀️'}
         </button>
         <button
           onClick={handleLogout}
-          style={{
-            padding: '6px 15px',
-            backgroundColor: '#ff6b6b',
-            color: 'white',
-            border: 'none',
-            borderRadius: '15px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontSize: '0.9rem',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.backgroundColor = '#ff5252';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.backgroundColor = '#ff6b6b';
-          }}
+          className="logout-btn"
         >
           Logout
         </button>
