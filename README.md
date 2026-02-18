@@ -212,33 +212,6 @@ npm start
 2. Services for API calls are in the `src/services/` directory
 3. Shared components are in the `src/components/shared/` directory
 
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/signup` - User registration
-- `POST /api/auth/login` - User login
-
-### Users
-- `GET /api/users` - Get all users (Admin only)
-- `GET /api/users/me` - Get current user profile
-- `PUT /api/users/me` - Update current user profile
-- `GET /api/users/me/products` - Get current wholesaler's products
-- `GET /api/users/me/orders` - Get current user's orders
-
-### Products
-- `GET /api/products` - Get all products
-- `GET /api/products/search` - Search products
-- `GET /api/products/:id` - Get product by ID
-- `POST /api/products` - Add new product (Wholesaler only)
-- `PUT /api/products/:id` - Update product (Wholesaler only)
-- `DELETE /api/products/:id` - Delete product (Wholesaler only)
-
-### Orders
-- `POST /api/orders` - Create new order
-- `GET /api/orders` - Get user's orders
-- `GET /api/orders/:id` - Get order by ID
-- `PUT /api/orders/:id/status` - Update order status
-
 ## Image Management
 
 ### Adding Images to Products
