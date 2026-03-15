@@ -270,12 +270,3 @@ Wholesalers can add images to products when creating or editing products:
    - ESLint
    - MongoDB for VS Code
 
-## Deployment
-
-For production deployment, consider:
-ok
-1. Using a cloud MongoDB service (MongoDB Atlas)
-2. Deploying backend to a Node.js hosting service (Heroku, AWS, etc.)
-3. Deploying frontend to a static hosting service (Netlify, Vercel, etc.)
-4. Setting proper environment variables for production
-5. Implementing proper error handling and logging
