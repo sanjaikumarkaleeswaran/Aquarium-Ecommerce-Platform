@@ -23,13 +23,23 @@ An e-commerce platform for aquarium products with role-based access for customer
 ## Features
 
 - Role-based authentication (Customer, Retailer, Wholesaler, Admin)
+- Mobile-responsive design system for all devices
 - Product catalog with category filtering
 - Dual pricing system (customer vs. wholesaler pricing)
-- Product image management
-- Order management system
-- Product tracking capabilities
-- Location-based product information
-- Recommendation system
+- Product image management with multi-image support
+- Order management system with real-time status tracking
+- AI-powered personalized recommendation system
+- Premium glassmorphism UI with fluid animations
+
+## Mobile Responsiveness Overhaul
+
+The platform has undergone a complete UI/UX transformation to ensure a seamless experience on smartphones, tablets, and desktops.
+
+### Key Enhancements:
+- **Mobile-First Utility Classes**: A specialized design layer in `index.css` for instant responsive adjustments.
+- **Optimized Dashboards**: All user portals (Wholesaler, Retailer, Admin, Customer) feature responsive grids and collapsible layouts.
+- **Touch-Friendly UI**: Buttons, inputs, and navigation elements scaled for ergonomic mobile usage.
+- **Performance Optimized**: Lightweight CSS-driven animations for smooth interactions on mobile hardware.
 
 ## Technology Stack
 
@@ -211,6 +221,7 @@ npm start
 1. Components are organized by role in the `src/components/` directory
 2. Services for API calls are in the `src/services/` directory
 3. Shared components are in the `src/components/shared/` directory
+4. **CSS Architecture**: The project uses a decoupled CSS approach. Component-specific styles are in external `.css` files (e.g., `AdminDashboard.css`) while shared utilities are in `index.css`. Inline `style={{}}` is discouraged for better performance and maintainability.
 
 ## Image Management
 
