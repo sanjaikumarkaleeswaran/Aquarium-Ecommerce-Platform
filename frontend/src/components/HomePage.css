@@ -4,7 +4,6 @@
     background: linear-gradient(180deg, #001f3f 0%, #003d7a 50%, #0074D9 100%);
     padding: 0;
     margin: 0;
-    /* Removed negative margin */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     position: relative;
     overflow-x: hidden;
@@ -39,18 +38,40 @@
     color: rgba(255, 255, 255, 0.95);
     margin-bottom: 40px;
     font-weight: 300;
-    animation: fadeInUp 1s ease-out;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+}
+
+/* Background Animations */
+.aqua-decor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.swimming-fish {
+    position: absolute;
+    opacity: 0.3;
+    animation: swim-across linear infinite;
+}
+
+.bubble {
+    position: absolute;
+    bottom: -50px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: bubbleRise linear infinite;
 }
 
 .homepage-cards-container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 20px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     position: relative;
     z-index: 10;
@@ -64,67 +85,92 @@
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.homepage-card:hover {
+    transform: translateY(-10px);
+}
+
+.role-icon-wrapper {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.role-btn {
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    margin-top: auto;
+    width: 100%;
+    transition: transform 0.2s;
+}
+
+.role-btn:hover {
+    transform: scale(1.05);
+}
+
+.features-section {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 60px auto;
+    max-width: 800px;
+    flex-wrap: wrap;
     position: relative;
-    overflow: hidden;
-    animation: cardSlideIn 0.8s ease-out;
+    z-index: 10;
 }
 
-/* Mobile Responsiveness */
+.feature-small {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px 20px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+}
+
+.homepage-footer {
+    text-align: center;
+    padding: 40px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 10;
+}
+
+@keyframes swim-across {
+    0% { transform: translateX(-100px); }
+    100% { transform: translateX(calc(100vw + 100px)); }
+}
+
+@keyframes bubbleRise {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    50% { opacity: 0.6; }
+    100% { transform: translateY(-110vh) scale(0.5); opacity: 0; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px rgba(0,200,255,0.4); }
+    to { text-shadow: 0 0 25px rgba(0,200,255,0.8); }
+}
+
+/* Mobile Adjustments */
 @media (max-width: 768px) {
-    .homepage-hero {
-        padding: 60px 15px 30px;
-    }
-
-    .homepage-logo {
-        font-size: 48px;
-        margin-bottom: 15px;
-    }
-
-    .homepage-title {
-        font-size: 32px;
-        margin-bottom: 12px;
-    }
-
-    .homepage-subtitle {
-        font-size: 18px;
-        margin-bottom: 30px;
-        padding: 0 15px;
-    }
-
-    .homepage-cards-container {
-        grid-template-columns: 1fr;
-        padding: 15px;
-        gap: 20px;
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-
-    .homepage-card {
-        padding: 25px 20px;
-        min-height: auto;
-    }
-}
-
-@media (max-width: 480px) {
-    .homepage-hero {
-        padding: 40px 10px 20px;
-    }
-
-    .homepage-logo {
-        font-size: 40px;
-    }
-
-    .homepage-title {
-        font-size: 26px;
-    }
-
-    .homepage-subtitle {
-        font-size: 16px;
-    }
-
-    .homepage-cards-container {
-        padding: 10px;
-        gap: 15px;
-    }
-}
+    .homepage-title { font-size: 32px; }
+    .homepage-subtitle { font-size: 18px; }
+    .homepage-cards-container { grid-template-columns: 1fr; }
+    .feature-small { flex: 1; min-width: 140px; }
+}

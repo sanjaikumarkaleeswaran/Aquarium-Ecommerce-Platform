@@ -1,0 +1,112 @@
+/* WholesalerDashboard.css */
+.wholesaler-dashboard {
+    padding: 20px;
+    background: var(--background-gradient);
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.dashboard-header-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+.dashboard-stats-container {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.business-overview-card {
+    flex: 1;
+    min-width: 300px;
+    background: var(--card-bg);
+}
+
+.orders-management-card {
+    flex: 1;
+    min-width: 300px;
+    background: var(--card-bg);
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.stats-mini-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-box {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid rgba(0, 168, 204, 0.1);
+}
+
+.stat-box h3 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.order-item-card {
+    border: 1px solid var(--border-color);
+    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.products-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .wholesaler-dashboard {
+        padding: 15px;
+    }
+
+    .dashboard-header-actions {
+        justify-content: center;
+    }
+
+    .dashboard-stats-container {
+        flex-direction: column;
+    }
+
+    .business-overview-card, 
+    .orders-management-card {
+        min-width: 100%;
+    }
+
+    .products-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .products-section-header button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-mini-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-box h3 {
+        font-size: 1.5rem;
+    }
+}

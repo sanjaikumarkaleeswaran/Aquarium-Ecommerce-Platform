@@ -134,90 +134,74 @@ function CustomerDashboard() {
     <div className="dashboard-container">
       <Header
         title="Customer Dashboard"
-        subtitle={`Welcome back, ${user?.name || 'Customer'}! Here's what's new in your aquarium world`}
+        subtitle={`Welcome back, ${user?.name || 'Customer'}! 🐠`}
       />
 
-      <div className="action-bar">
+      <div className="action-bar animate-fade-in" style={{ marginTop: '20px' }}>
         <div className="action-buttons">
           <button
             onClick={() => navigate('/customer/cart')}
-            className="action-btn btn-cart"
+            className="btn-cart action-btn"
           >
-            🛒 View Cart ({cart.length})
+            🛒 Cart ({cart.length})
           </button>
 
           <button
             onClick={() => navigate('/customer/orders')}
-            className="action-btn btn-orders"
+            className="btn-orders action-btn"
           >
-            📦 My Orders ({myOrders.length})
+            📦 Orders ({myOrders.length})
           </button>
 
           <button
             onClick={() => navigate('/customer/products')}
-            className="action-btn btn-browse"
+            className="btn-browse action-btn"
           >
-            Browse All Products
+            Browse All
           </button>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="stats-grid">
-        <div
-          className="stat-card"
-          onClick={() => navigate('/customer/cart')}
-        >
+      <div className="stats-grid animate-fade-in" style={{ animationDelay: '0.1s' }}>
+        <div className="card stat-card" onClick={() => navigate('/customer/cart')}>
           <h3>🛒 Your Cart</h3>
-          <p className="stat-value" style={{ color: '#00a8cc' }}>
-            {cart.length}
-          </p>
-          <p className="stat-label">items</p>
+          <p className="stat-value" style={{ color: '#00a8cc' }}>{cart.length}</p>
+          <span className="text-secondary">active items</span>
         </div>
 
-        <div
-          className="stat-card"
-          onClick={() => navigate('/customer/products')}
-        >
-          <h3>🐠 Products</h3>
-          <p className="stat-value" style={{ color: '#4ecdc4' }}>
-            {totalProductsCount}
-          </p>
-          <p className="stat-label">available</p>
+        <div className="card stat-card" onClick={() => navigate('/customer/products')}>
+          <h3>🐠 Inventory</h3>
+          <p className="stat-value" style={{ color: '#4ecdc4' }}>{totalProductsCount}</p>
+          <span className="text-secondary">available now</span>
         </div>
 
-        <div className="stat-card">
+        <div className="card stat-card">
           <h3>🏆 Rewards</h3>
-          <p className="stat-value" style={{ color: '#1dd1a1' }}>
-            1250
-          </p>
-          <p className="stat-label">points</p>
+          <p className="stat-value" style={{ color: '#1dd1a1' }}>1250</p>
+          <span className="text-secondary">points earned</span>
         </div>
 
-        <div
-          className="stat-card"
-          onClick={() => navigate('/customer/orders')}
-        >
-          <h3>📦 Orders</h3>
-          <p className="stat-value" style={{ color: '#f368e0' }}>
-            {myOrders.length}
-          </p>
-          <p className="stat-label">this month</p>
+        <div className="card stat-card" onClick={() => navigate('/customer/orders')}>
+          <h3>📦 Purchases</h3>
+          <p className="stat-value" style={{ color: '#f368e0' }}>{myOrders.length}</p>
+          <span className="text-secondary">orders placed</span>
         </div>
       </div>
 
       {/* My Recent Orders Section */}
-      <div className="section-container">
-        <h2 className="section-title" style={{ marginBottom: '20px' }}>
-          📦 My Recent Orders
+      <div className="section-container animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        <h2 className="ocean-blue" style={{ marginBottom: '20px', fontSize: '1.5rem' }}>
+          📦 Recent Orders
         </h2>
 
         {myOrders.length === 0 ? (
-          <div className="empty-orders">
-            <p style={{ fontSize: '1.1rem', marginBottom: '15px' }}>You haven't placed any orders yet.</p>
+          <div className="card text-center" style={{ padding: '30px' }}>
+            <p className="text-secondary">No orders yet. Discover our collection!</p>
             <button
               onClick={() => navigate('/customer/products')}
-              className="start-shopping-btn"
+              className="btn-primary"
+              style={{ marginTop: '15px' }}
             >
               Start Shopping
             </button>
@@ -227,13 +211,14 @@ function CustomerDashboard() {
             {myOrders.slice(0, 3).map(order => (
               <div
                 key={order._id || order.id}
-                className="order-card-item"
+                className="card order-card-item"
                 onClick={() => navigate('/customer/orders')}
+                style={{ padding: '20px' }}
               >
-                <div className="order-card-header">
+                <div className="flex justify-between items-start" style={{ marginBottom: '15px' }}>
                   <div>
-                    <span className="order-id">#{order.orderNumber?.slice(-6) || (order._id && order._id.slice(-6))}</span>
-                    <div className="order-date">
+                    <span className="font-bold ocean-blue">#{order.orderNumber?.slice(-6) || (order._id && order._id.slice(-6))}</span>
+                    <div className="text-secondary" style={{ fontSize: '0.8rem', marginTop: '3px' }}>
                       {new Date(order.createdAt).toLocaleDateString()}
                     </div>
                   </div>
@@ -242,23 +227,24 @@ function CustomerDashboard() {
                     style={{
                       backgroundColor: order.status === 'delivered' ? '#2ecc71' :
                         order.status === 'shipped' ? '#3498db' : '#f39c12',
+                      fontSize: '0.75rem',
+                      padding: '4px 10px',
+                      borderRadius: '15px',
+                      color: 'white',
+                      fontWeight: 'bold'
                     }}
                   >
                     {order.status.toUpperCase()}
                   </span>
                 </div>
 
-                <div className="order-details" style={{ marginBottom: '15px' }}>
-                  <p>
-                    <strong>Items:</strong> {order.items.length}
-                  </p>
-                  <p className="order-total">
-                    <strong>Total:</strong> ₹{order.totalAmount}
-                  </p>
+                <div className="flex justify-between items-center" style={{ marginBottom: '10px', fontSize: '0.9rem' }}>
+                  <span className="text-secondary">{order.items.length} item(s)</span>
+                  <span className="font-bold text-success">₹{order.totalAmount}</span>
                 </div>
 
-                <div className="order-seller">
-                  Sold by: <strong>{order.sellerName}</strong>
+                <div className="text-secondary" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '10px', fontSize: '0.85rem' }}>
+                  Store: <strong>{order.sellerName}</strong>
                 </div>
               </div>
             ))}
@@ -267,23 +253,18 @@ function CustomerDashboard() {
       </div>
 
       {/* Recommended Products Section */}
-      <div className="section-container">
-        <div className="section-header">
-          <h2 className="section-title">
-            🔥 Recommended for You
-          </h2>
-          <a
-            href="#"
-            className="view-all-link"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate('/customer/products?tab=recommended');
-            }}
+      <div className="section-container animate-fade-in" style={{ animationDelay: '0.3s' }}>
+        <div className="flex justify-between items-center" style={{ marginBottom: '20px' }}>
+          <h2 className="ocean-blue" style={{ margin: 0, fontSize: '1.5rem' }}>🔥 Just for You</h2>
+          <button 
+            className="btn-sm" 
+            onClick={() => navigate('/customer/products?tab=recommended')}
+            style={{ padding: '6px 15px', cursor: 'pointer' }}
           >
-            View All →
-          </a>
+            View More
+          </button>
         </div>
-        <div className="products-grid">
+        <div className="responsive-grid">
           {recommendedProducts.map(product => (
             <ProductCard
               key={product._id || product.id}
@@ -296,38 +277,9 @@ function CustomerDashboard() {
           ))}
         </div>
       </div>
-
-      {/* All Products Section */}
-      <div>
-        <div className="section-header">
-          <h2 className="section-title">
-            All Products
-          </h2>
-          <a
-            href="#"
-            className="view-all-link"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate('/customer/products');
-            }}
-          >
-            View All →
-          </a>
-        </div>
-        <div className="products-grid">
-          {products.map(product => (
-            <ProductCard
-              key={product._id || product.id}
-              product={product}
-              onAddToCart={addToCart}
-              onViewDetails={handleProductView}
-              onViewLocations={(product) => navigate(`/customer/product/${product._id || product.id}/locations`)}
-            />
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
 
 export default CustomerDashboard;
+ort default CustomerDashboard;

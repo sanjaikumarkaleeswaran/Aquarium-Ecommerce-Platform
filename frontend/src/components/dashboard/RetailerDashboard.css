@@ -1,0 +1,136 @@
+/* RetailerDashboard.css */
+.retailer-dashboard {
+    padding: 20px;
+    background: var(--background-gradient);
+    min-height: 100vh;
+}
+
+.retailer-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+}
+
+.retailer-actions .button-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.retailer-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.retailer-stat-card {
+    text-align: center;
+    background: var(--card-bg);
+}
+
+.retailer-stat-card h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.retailer-stat-card .stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.dashboard-sections-row {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.dashboard-section-card {
+    flex: 1;
+    min-width: 320px;
+}
+
+.products-scroll-area {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.mini-product-item {
+    border: 1px solid var(--border-color);
+    margin-bottom: 12px;
+    padding: 15px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.customer-orders-card {
+    margin-top: 30px;
+}
+
+.customer-order-item {
+    border: 1px solid var(--border-color);
+    margin: 15px 0;
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.order-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-color);
+    margin-top: 15px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .retailer-dashboard {
+        padding: 15px;
+        padding-bottom: 80px;
+    }
+
+    .retailer-actions .button-group {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .retailer-actions button {
+        flex: 1;
+        font-size: 0.9rem;
+    }
+
+    .dashboard-sections-row {
+        flex-direction: column;
+    }
+
+    .dashboard-section-card {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .retailer-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .retailer-actions .button-group {
+        flex-direction: column;
+    }
+
+    .retailer-actions button {
+        width: 100%;
+    }
+    
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+}
